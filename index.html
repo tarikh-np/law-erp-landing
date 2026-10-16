@@ -69,176 +69,225 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Tarikh",
-    "url": "https://www.tarikh.tech/",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://www.tarikh.tech/icon-512.png",
-      "width": 512,
-      "height": 512
-    },
-    "sameAs": [
-      "https://www.instagram.com/tarikh.np/"
-    ],
-    "areaServed": {
-      "@type": "Country",
-      "name": "Nepal"
-    }
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Tarikh — Law ERP & Case Management Software",
-    "alternateName": [
-      "Tarikh NP",
-      "Tarikh Nepal",
-      "तारिख"
-    ],
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Web",
-    "description": "Tarikh is legal practice management and law ERP software built specifically for Nepali law firms. It manages matters, court hearings, Peshi/Tarikh dates, clients, documents, billing and firm operations in one secure platform.",
-    "url": "https://www.tarikh.tech/",
-    "provider": {
-      "@type": "Organization",
-      "name": "Tarikh",
-      "url": "https://www.tarikh.tech/",
-      "logo": {
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.tarikh.tech/#organization",
+        "name": "Tarikh",
+        "alternateName": "तारिख",
+        "url": "https://www.tarikh.tech/",
+        "logo": {
+          "@id": "https://www.tarikh.tech/#logo"
+        },
+        "image": {
+          "@id": "https://www.tarikh.tech/#logo"
+        },
+        "description": "Tarikh is legal practice management and law ERP software for law firms in Nepal, covering matters, court hearings and Peshi dates, clients, documents and NPR billing.",
+        "sameAs": [
+          "https://www.instagram.com/tarikh.np/"
+        ],
+        "areaServed": {
+          "@type": "Country",
+          "name": "Nepal"
+        },
+        "parentOrganization": {
+          "@type": "Organization",
+          "name": "Comply Nepal"
+        },
+        "knowsAbout": [
+          "Legal practice management",
+          "Case management",
+          "Court hearing tracking",
+          "Nepal court system",
+          "Bikram Samvat calendar",
+          "Law firm billing"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "email": "support@complynepal.com",
+          "availableLanguage": [
+            "English",
+            "Nepali"
+          ]
+        }
+      },
+      {
         "@type": "ImageObject",
+        "@id": "https://www.tarikh.tech/#logo",
         "url": "https://www.tarikh.tech/icon-512.png",
+        "contentUrl": "https://www.tarikh.tech/icon-512.png",
         "width": 512,
-        "height": 512
+        "height": 512,
+        "caption": "Tarikh"
       },
-      "sameAs": [
-        "https://www.instagram.com/tarikh.np/"
-      ],
-      "areaServed": {
-        "@type": "Country",
-        "name": "Nepal"
-      }
-    },
-    "featureList": [
-      "Matter & Case Management",
-      "Court Hearing Tracking & Calendar",
-      "Peshi/Tarikh Date Management",
-      "Client & Party Management",
-      "Document Management",
-      "Billing & Invoice Generation",
-      "Bikram Samvat (BS) Calendar",
-      "Role-Based Access Control",
-      "Audit Trail & Activity Logs",
-      "Firm Reporting"
-    ],
-    "inLanguage": "en"
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Tarikh",
-    "url": "https://www.tarikh.tech/",
-    "inLanguage": "en",
-    "publisher": {
-      "@type": "Organization",
-      "name": "Tarikh",
-      "url": "https://www.tarikh.tech/"
-    }
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Tarikh — Law ERP & Case Management Software for Nepal",
-    "url": "https://www.tarikh.tech/",
-    "isPartOf": {
-      "@type": "WebSite",
-      "name": "Tarikh",
-      "url": "https://www.tarikh.tech/"
-    },
-    "about": {
-      "@type": "SoftwareApplication",
-      "name": "Tarikh",
-      "url": "https://www.tarikh.tech/"
-    },
-    "inLanguage": "en"
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
       {
-        "@type": "Question",
-        "name": "Who is Tarikh designed for?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Tarikh is built for modern Nepalese law firms and legal teams — solo practitioners, small firms and growing practices that want matters, clients, court events, documents and billing managed in one place."
+        "@type": "WebSite",
+        "@id": "https://www.tarikh.tech/#website",
+        "url": "https://www.tarikh.tech/",
+        "name": "Tarikh",
+        "description": "Law ERP and legal practice management software for Nepal's law firms.",
+        "publisher": {
+          "@id": "https://www.tarikh.tech/#organization"
+        },
+        "inLanguage": "en"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://www.tarikh.tech/#software",
+        "name": "Tarikh",
+        "alternateName": [
+          "Tarikh NP",
+          "Tarikh Nepal",
+          "तारिख"
+        ],
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://www.tarikh.tech/",
+        "description": "Legal practice management and law ERP software for Nepal's law firms: matters, court hearings and Peshi dates, clients, documents and NPR billing in one system.",
+        "provider": {
+          "@id": "https://www.tarikh.tech/#organization"
+        },
+        "publisher": {
+          "@id": "https://www.tarikh.tech/#organization"
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "Nepal"
+        },
+        "featureList": [
+          "Matter and case management",
+          "Court hearing tracking and calendar",
+          "Peshi and Tarikh date management",
+          "Client and party management",
+          "Document management",
+          "Billing and invoice generation in NPR",
+          "Bikram Samvat calendar",
+          "Role-based access control",
+          "Audit logs",
+          "Firm reporting"
+        ],
+        "inLanguage": "en"
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://www.tarikh.tech/#webpage",
+        "url": "https://www.tarikh.tech/",
+        "name": "Tarikh — Law ERP & Case Management Software for Nepal",
+        "description": "Tarikh is legal practice management software for Nepal's law firms: matters, court hearings, Peshi dates, clients, documents and NPR billing.",
+        "isPartOf": {
+          "@id": "https://www.tarikh.tech/#website"
+        },
+        "inLanguage": "en",
+        "breadcrumb": {
+          "@id": "https://www.tarikh.tech/#breadcrumb"
+        },
+        "about": {
+          "@id": "https://www.tarikh.tech/#software"
+        },
+        "primaryImageOfPage": {
+          "@id": "https://www.tarikh.tech/#primaryimage"
+        },
+        "mentions": {
+          "@id": "https://www.tarikh.tech/#software"
         }
       },
       {
-        "@type": "Question",
-        "name": "Can Tarikh manage multiple matters?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. Every client can have multiple matters, and every matter keeps its own parties, court details, documents, activity and billing history organized and connected."
-        }
+        "@type": "ImageObject",
+        "@id": "https://www.tarikh.tech/#primaryimage",
+        "url": "https://www.tarikh.tech/assets/images/og-cover.png",
+        "contentUrl": "https://www.tarikh.tech/assets/images/og-cover.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "Tarikh dashboard: matters, upcoming court hearings and NPR billing"
       },
       {
-        "@type": "Question",
-        "name": "Can I track court hearings and Tarikh/Peshi dates?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. Record hearings, Tarikh/Peshi dates, and court deadlines, attach them to matters, and keep upcoming dates visible across your Bikram Samvat calendar and firm dashboard."
-        }
+        "@type": "BreadcrumbList",
+        "@id": "https://www.tarikh.tech/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.tarikh.tech/"
+          }
+        ]
       },
       {
-        "@type": "Question",
-        "name": "Can I manage clients and parties?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. Keep client information, contacts and opposing parties connected to the right matters, with full history in one place."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can different advocates and employees have different permissions?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. Tarikh includes role-based access with configurable permissions, so partners, senior advocates, associates, and administrative staff see only what fits their role."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I manage documents within matters?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. Legal documents can be attached to specific matters, organized, versioned, and access-controlled."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Does Tarikh include billing and invoices in NPR?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. Track unbilled time and expenses, generate professional invoices in Nepali Rupees (NPR), and monitor outstanding firm balances."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How do we get started or request a demo walkthrough?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Click \"Book a Demo\" anywhere on the page, or contact our Kathmandu team directly via email or Instagram @tarikh.np to set up a walkthrough for your firm."
-        }
+        "@type": "FAQPage",
+        "@id": "https://www.tarikh.tech/#faq",
+        "isPartOf": {
+          "@id": "https://www.tarikh.tech/#webpage"
+        },
+        "about": {
+          "@id": "https://www.tarikh.tech/#software"
+        },
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Who is Tarikh designed for?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Tarikh is built for modern Nepalese law firms and legal teams — solo practitioners, small firms and growing practices that want matters, clients, court events, documents and billing managed in one place."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can Tarikh manage multiple matters?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Every client can have multiple matters, and every matter keeps its own parties, court details, documents, activity and billing history organized and connected."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I track court hearings and Tarikh/Peshi dates?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Record hearings, Tarikh/Peshi dates, and court deadlines, attach them to matters, and keep upcoming dates visible across your Bikram Samvat calendar and firm dashboard."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I manage clients and parties?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Keep client information, contacts and opposing parties connected to the right matters, with full history in one place."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can different advocates and employees have different permissions?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Tarikh includes role-based access with configurable permissions, so partners, senior advocates, associates, and administrative staff see only what fits their role."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I manage documents within matters?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Legal documents can be attached to specific matters, organized, versioned, and access-controlled."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does Tarikh include billing and invoices in NPR?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Track unbilled time and expenses, generate professional invoices in Nepali Rupees (NPR), and monitor outstanding firm balances."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do we get started or request a demo walkthrough?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Click \"Book a Demo\" anywhere on the page, or contact our Kathmandu team directly via email or Instagram @tarikh.np to set up a walkthrough for your firm."
+            }
+          }
+        ]
       }
     ]
   }
@@ -249,7 +298,7 @@
   <a class="skip-link" href="#main">Skip to main content</a>
 
   <!-- ============================ NAVIGATION ============================ -->
-          <header class="site-header" id="siteHeader">
+              <header class="site-header" id="siteHeader">
     <div class="container container--wide header-inner">
       <a class="brand" href="/" aria-label="Tarikh — home">
         <img src="/assets/images/primary.png" alt="Tarikh" class="brand-logo" height="32" width="30">
@@ -1792,7 +1841,7 @@
   </main>
 
   <!-- ============================ FOOTER ============================ -->
-          <footer class="site-footer">
+              <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">

@@ -59,41 +59,114 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Blog",
-    "name": "Tarikh Blog",
-    "url": "https://www.tarikh.tech/blog/",
-    "description": "Insights for Nepal's law firms on case management, court hearing tracking, Peshi/Tarikh dates and legal technology.",
-    "inLanguage": "en",
-    "publisher": {
-      "@type": "Organization",
-      "name": "Tarikh",
-      "url": "https://www.tarikh.tech/",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://www.tarikh.tech/icon-512.png",
-        "width": 512,
-        "height": 512
-      }
-    }
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
+    "@graph": [
       {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://www.tarikh.tech/"
+        "@type": "Organization",
+        "@id": "https://www.tarikh.tech/#organization",
+        "name": "Tarikh",
+        "alternateName": "तारिख",
+        "url": "https://www.tarikh.tech/",
+        "logo": {
+          "@id": "https://www.tarikh.tech/#logo"
+        },
+        "image": {
+          "@id": "https://www.tarikh.tech/#logo"
+        },
+        "description": "Tarikh is legal practice management and law ERP software for law firms in Nepal, covering matters, court hearings and Peshi dates, clients, documents and NPR billing.",
+        "sameAs": [
+          "https://www.instagram.com/tarikh.np/"
+        ],
+        "areaServed": {
+          "@type": "Country",
+          "name": "Nepal"
+        },
+        "parentOrganization": {
+          "@type": "Organization",
+          "name": "Comply Nepal"
+        },
+        "knowsAbout": [
+          "Legal practice management",
+          "Case management",
+          "Court hearing tracking",
+          "Nepal court system",
+          "Bikram Samvat calendar",
+          "Law firm billing"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "email": "support@complynepal.com",
+          "availableLanguage": [
+            "English",
+            "Nepali"
+          ]
+        }
       },
       {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Blog",
-        "item": "https://www.tarikh.tech/blog/"
+        "@type": "ImageObject",
+        "@id": "https://www.tarikh.tech/#logo",
+        "url": "https://www.tarikh.tech/icon-512.png",
+        "contentUrl": "https://www.tarikh.tech/icon-512.png",
+        "width": 512,
+        "height": 512,
+        "caption": "Tarikh"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.tarikh.tech/#website",
+        "url": "https://www.tarikh.tech/",
+        "name": "Tarikh",
+        "description": "Law ERP and legal practice management software for Nepal's law firms.",
+        "publisher": {
+          "@id": "https://www.tarikh.tech/#organization"
+        },
+        "inLanguage": "en"
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://www.tarikh.tech/blog/#webpage",
+        "url": "https://www.tarikh.tech/blog/",
+        "name": "Nepal Legal Tech & Law Firm Insights | Tarikh Blog",
+        "description": "Practical guides for Nepal's law firms on case management, Peshi and Tarikh dates, Bikram Samvat scheduling, NPR billing, documents and legal technology.",
+        "isPartOf": {
+          "@id": "https://www.tarikh.tech/#website"
+        },
+        "inLanguage": "en",
+        "breadcrumb": {
+          "@id": "https://www.tarikh.tech/blog/#breadcrumb"
+        }
+      },
+      {
+        "@type": "Blog",
+        "@id": "https://www.tarikh.tech/blog/#blog",
+        "url": "https://www.tarikh.tech/blog/",
+        "name": "Tarikh Blog",
+        "description": "Guides for Nepal's law firms on case management, court hearing and Peshi date tracking, NPR billing and legal technology.",
+        "publisher": {
+          "@id": "https://www.tarikh.tech/#organization"
+        },
+        "isPartOf": {
+          "@id": "https://www.tarikh.tech/#website"
+        },
+        "inLanguage": "en"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://www.tarikh.tech/blog/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.tarikh.tech/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Blog",
+            "item": "https://www.tarikh.tech/blog/"
+          }
+        ]
       }
     ]
   }
@@ -102,7 +175,7 @@
 <body id="top">
   <a class="skip-link" href="#main">Skip to main content</a>
 
-        <header class="site-header" id="siteHeader">
+            <header class="site-header" id="siteHeader">
     <div class="container container--wide header-inner">
       <a class="brand" href="/" aria-label="Tarikh — home">
         <img src="/assets/images/primary.png" alt="Tarikh" class="brand-logo" height="32" width="30">
@@ -332,7 +405,7 @@
 
   </main>
 
-        <footer class="site-footer">
+            <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">

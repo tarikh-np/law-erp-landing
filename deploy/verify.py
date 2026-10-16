@@ -46,13 +46,10 @@ COMPLYNEPAL_ALLOWED_FILES = {
     '.htaccess',
     'deploy/nginx.conf.snippet',
 }
-# The one place a live page may still name the old host: the flagged contact address.
-COMPLYNEPAL_ALLOWED_HTML_LINES = {
-    'index.html': ['support@complynepal.com'],
-    'about/index.html': ['support@complynepal.com'],
-    'contact/index.html': ['support@complynepal.com'],
-    'blog/index.html': ['support@complynepal.com'],
-}
+# The only way a live page may still name the old host: the existing, working contact
+# address, kept on the owner's default until a tarikh.tech address is confirmed. Every
+# page with a match must be this address and nothing else. Documented in SEO.md.
+COMPLYNEPAL_ALLOWED_HTML_ADDRESS = 'support@complynepal.com'
 
 FORBIDDEN_JSONLD_KEYS = {
     'interactionStatistic', 'downloadUrl', 'softwareHelp', 'softwareVersion',
@@ -61,6 +58,7 @@ FORBIDDEN_JSONLD_KEYS = {
     'reviewCount', 'ratingValue', 'aggregateRating', 'award',
 }
 FORBIDDEN_SAMEAS_HOSTS = ('facebook.com', 'linkedin.com', 'twitter.com', 'x.com')
+ALLOWED_EXTERNAL_HOSTS = ('instagram.com/tarikh.np',)
 
 VOID_TAGS = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
              'meta', 'param', 'source', 'track', 'wbr'}
@@ -170,15 +168,13 @@ def check_complynepal() -> None:
         r = rel(p)
         if r in COMPLYNEPAL_ALLOWED_FILES:
             continue
-        allowed = COMPLYNEPAL_ALLOWED_HTML_LINES.get(r, [])
-        if allowed:
-            offenders = [ln for ln in text.splitlines()
+        if p.suffix.lower() in {'.html', '.htm'}:
+            offenders = [ln.strip() for ln in text.splitlines()
                          if 'complynepal' in ln.lower()
-                         and not any(a in ln for a in allowed)]
-            if not offenders:
-                continue
-            fail(f'gate 1: {r} mentions the old host on {len(offenders)} undocumented line(s): '
-                 f'{offenders[0].strip()[:90]}')
+                         and COMPLYNEPAL_ALLOWED_HTML_ADDRESS not in ln]
+            if offenders:
+                fail(f'gate 1: {r} names the old host outside the flagged contact address: '
+                     f'{offenders[0][:100]}')
             continue
         fail(f'gate 1: {r} still mentions the old host (not an allowed exception)')
 
@@ -218,6 +214,8 @@ def check_jsonld(path: pathlib.Path, text: str) -> list[dict]:
         for k, v in walk(data):
             if k in FORBIDDEN_JSONLD_KEYS:
                 fail(f'gate 5: {rel(path)} JSON-LD uses forbidden key "{k}"')
+            if k == 'price' and str(v).strip() in ('0', '0.0', '0.00'):
+                fail(f'gate 5: {rel(path)} JSON-LD carries a placeholder price of 0')
             if k == 'sameAs':
                 urls = v if isinstance(v, list) else [v]
                 for u in urls:
@@ -226,9 +224,14 @@ def check_jsonld(path: pathlib.Path, text: str) -> list[dict]:
             if k == '@id' and isinstance(v, str) and v.startswith(ORIGIN + '/#'):
                 if not any(v in json.dumps(b) for b in blocks):
                     fail(f'gate 5: {rel(path)} @id {v} is never defined')
-            if isinstance(v, str) and v.startswith('http') and 'schema.org' not in v \
-                    and not v.startswith(ORIGIN):
-                fail(f'gate 5: {rel(path)} JSON-LD has an off-origin URL: {v}')
+    # Every URL inside JSON-LD must be on the new origin, a schema.org type, or one of the
+    # few external profiles the site actually links to.
+    for data in blocks:
+        for _, v in walk(data):
+            if isinstance(v, str) and v.startswith('http') \
+                    and 'schema.org' not in v and not v.startswith(ORIGIN):
+                if not any(h in v for h in ALLOWED_EXTERNAL_HOSTS):
+                    fail(f'gate 5: {rel(path)} JSON-LD has an unverified off-origin URL: {v}')
     # @id references that need to resolve within their own block
     for data in blocks:
         root_id = data.get('@id')
@@ -248,13 +251,9 @@ def check_faq_parity() -> None:
         r'<div class="faq-a-inner">(.*?)</div>', text, re.S)]
     schema = None
     for data in check_jsonld(home, text):
-        if data.get('@type') == 'FAQPage' or 'FAQPage' in json.dumps(data):
-            schema = data
-    if schema is None:
-        for data in check_jsonld(home, text):
-            for node in (data.get('@graph') or [data]):
-                if isinstance(node, dict) and node.get('@type') == 'FAQPage':
-                    schema = node
+        for node in (data.get('@graph') or [data]):
+            if isinstance(node, dict) and node.get('@type') == 'FAQPage':
+                schema = node
     if schema is None:
         fail('gate 5: homepage has no FAQPage node')
         return
@@ -537,6 +536,8 @@ def main() -> int:
     if '--serve' in sys.argv:
         check_serve(pages)
 
+    print('gate 1: `complynepal` occurrences are limited to the redirect map / host configs, '
+          f'the migration docs and the flagged contact address ({COMPLYNEPAL_ALLOWED_HTML_ADDRESS}).')
     print(f'Pages checked: {len(pages)}')
     for p in pages:
         print(f'  {route_for(p):<42} {rel(p)}')

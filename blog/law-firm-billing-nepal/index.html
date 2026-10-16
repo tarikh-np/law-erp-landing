@@ -61,57 +61,137 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": "Law firm billing in Nepal: getting paid without the awkwardness",
-    "url": "https://www.tarikh.tech/blog/law-firm-billing-nepal",
-    "mainEntityOfPage": "https://www.tarikh.tech/blog/law-firm-billing-nepal",
-    "datePublished": "2026-08-15",
-    "dateModified": "2026-10-16",
-    "image": [
-      "https://www.tarikh.tech/assets/images/blog/law-firm-billing-nepal.webp"
-    ],
-    "author": {
-      "@type": "Organization",
-      "name": "Tarikh",
-      "url": "https://www.tarikh.tech/about"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Tarikh",
-      "url": "https://www.tarikh.tech/",
-      "logo": {
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.tarikh.tech/#organization",
+        "name": "Tarikh",
+        "alternateName": "तारिख",
+        "url": "https://www.tarikh.tech/",
+        "logo": {
+          "@id": "https://www.tarikh.tech/#logo"
+        },
+        "image": {
+          "@id": "https://www.tarikh.tech/#logo"
+        },
+        "description": "Tarikh is legal practice management and law ERP software for law firms in Nepal, covering matters, court hearings and Peshi dates, clients, documents and NPR billing.",
+        "sameAs": [
+          "https://www.instagram.com/tarikh.np/"
+        ],
+        "areaServed": {
+          "@type": "Country",
+          "name": "Nepal"
+        },
+        "parentOrganization": {
+          "@type": "Organization",
+          "name": "Comply Nepal"
+        },
+        "knowsAbout": [
+          "Legal practice management",
+          "Case management",
+          "Court hearing tracking",
+          "Nepal court system",
+          "Bikram Samvat calendar",
+          "Law firm billing"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "email": "support@complynepal.com",
+          "availableLanguage": [
+            "English",
+            "Nepali"
+          ]
+        }
+      },
+      {
         "@type": "ImageObject",
+        "@id": "https://www.tarikh.tech/#logo",
         "url": "https://www.tarikh.tech/icon-512.png",
+        "contentUrl": "https://www.tarikh.tech/icon-512.png",
         "width": 512,
-        "height": 512
-      }
-    },
-    "inLanguage": "en"
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://www.tarikh.tech/"
+        "height": 512,
+        "caption": "Tarikh"
       },
       {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Blog",
-        "item": "https://www.tarikh.tech/blog/"
+        "@type": "WebSite",
+        "@id": "https://www.tarikh.tech/#website",
+        "url": "https://www.tarikh.tech/",
+        "name": "Tarikh",
+        "description": "Law ERP and legal practice management software for Nepal's law firms.",
+        "publisher": {
+          "@id": "https://www.tarikh.tech/#organization"
+        },
+        "inLanguage": "en"
       },
       {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "Law firm billing in Nepal",
-        "item": "https://www.tarikh.tech/blog/law-firm-billing-nepal"
+        "@type": "WebPage",
+        "@id": "https://www.tarikh.tech/blog/law-firm-billing-nepal#webpage",
+        "url": "https://www.tarikh.tech/blog/law-firm-billing-nepal",
+        "name": "Law Firm Billing in Nepal: NPR Invoicing | Tarikh",
+        "description": "Practical NPR invoicing habits for Nepali law firms from the Tarikh blog: recording time per matter, agreeing fees early and following up on balances.",
+        "isPartOf": {
+          "@id": "https://www.tarikh.tech/#website"
+        },
+        "inLanguage": "en",
+        "breadcrumb": {
+          "@id": "https://www.tarikh.tech/blog/law-firm-billing-nepal#breadcrumb"
+        },
+        "mainEntity": {
+          "@id": "https://www.tarikh.tech/blog/law-firm-billing-nepal#article"
+        },
+        "about": {
+          "@id": "https://www.tarikh.tech/#software"
+        }
+      },
+      {
+        "@type": "BlogPosting",
+        "@id": "https://www.tarikh.tech/blog/law-firm-billing-nepal#article",
+        "headline": "Law firm billing in Nepal: getting paid without the awkwardness",
+        "url": "https://www.tarikh.tech/blog/law-firm-billing-nepal",
+        "mainEntityOfPage": {
+          "@id": "https://www.tarikh.tech/blog/law-firm-billing-nepal#webpage"
+        },
+        "datePublished": "2026-08-15",
+        "dateModified": "2026-10-16",
+        "articleSection": "Billing & Invoicing",
+        "image": [
+          "https://www.tarikh.tech/assets/images/blog/law-firm-billing-nepal.webp"
+        ],
+        "author": {
+          "@id": "https://www.tarikh.tech/#organization"
+        },
+        "publisher": {
+          "@id": "https://www.tarikh.tech/#organization"
+        },
+        "isPartOf": {
+          "@id": "https://www.tarikh.tech/#website"
+        },
+        "inLanguage": "en"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://www.tarikh.tech/blog/law-firm-billing-nepal#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.tarikh.tech/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Blog",
+            "item": "https://www.tarikh.tech/blog/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Law firm billing in Nepal",
+            "item": "https://www.tarikh.tech/blog/law-firm-billing-nepal"
+          }
+        ]
       }
     ]
   }
@@ -120,7 +200,7 @@
 <body id="top">
   <a class="skip-link" href="#main">Skip to main content</a>
 
-        <header class="site-header" id="siteHeader">
+            <header class="site-header" id="siteHeader">
     <div class="container container--wide header-inner">
       <a class="brand" href="/" aria-label="Tarikh — home">
         <img src="/assets/images/primary.png" alt="Tarikh" class="brand-logo" height="32" width="30">
@@ -328,7 +408,7 @@
 
   </main>
 
-        <footer class="site-footer">
+            <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">

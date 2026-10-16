@@ -59,34 +59,100 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Contact Tarikh",
-    "url": "https://www.tarikh.tech/contact",
-    "isPartOf": {
-      "@type": "WebSite",
-      "name": "Tarikh",
-      "url": "https://www.tarikh.tech/"
-    },
-    "inLanguage": "en"
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
+    "@graph": [
       {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://www.tarikh.tech/"
+        "@type": "Organization",
+        "@id": "https://www.tarikh.tech/#organization",
+        "name": "Tarikh",
+        "alternateName": "तारिख",
+        "url": "https://www.tarikh.tech/",
+        "logo": {
+          "@id": "https://www.tarikh.tech/#logo"
+        },
+        "image": {
+          "@id": "https://www.tarikh.tech/#logo"
+        },
+        "description": "Tarikh is legal practice management and law ERP software for law firms in Nepal, covering matters, court hearings and Peshi dates, clients, documents and NPR billing.",
+        "sameAs": [
+          "https://www.instagram.com/tarikh.np/"
+        ],
+        "areaServed": {
+          "@type": "Country",
+          "name": "Nepal"
+        },
+        "parentOrganization": {
+          "@type": "Organization",
+          "name": "Comply Nepal"
+        },
+        "knowsAbout": [
+          "Legal practice management",
+          "Case management",
+          "Court hearing tracking",
+          "Nepal court system",
+          "Bikram Samvat calendar",
+          "Law firm billing"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "email": "support@complynepal.com",
+          "availableLanguage": [
+            "English",
+            "Nepali"
+          ]
+        }
       },
       {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Contact",
-        "item": "https://www.tarikh.tech/contact"
+        "@type": "ImageObject",
+        "@id": "https://www.tarikh.tech/#logo",
+        "url": "https://www.tarikh.tech/icon-512.png",
+        "contentUrl": "https://www.tarikh.tech/icon-512.png",
+        "width": 512,
+        "height": 512,
+        "caption": "Tarikh"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.tarikh.tech/#website",
+        "url": "https://www.tarikh.tech/",
+        "name": "Tarikh",
+        "description": "Law ERP and legal practice management software for Nepal's law firms.",
+        "publisher": {
+          "@id": "https://www.tarikh.tech/#organization"
+        },
+        "inLanguage": "en"
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://www.tarikh.tech/contact#webpage",
+        "url": "https://www.tarikh.tech/contact",
+        "name": "Contact Tarikh | Book a Demo for Your Law Firm",
+        "description": "Book a demo of Tarikh, ask about pricing for your law firm, or send a support question. Reach the Tarikh team in Kathmandu by email or on Instagram.",
+        "isPartOf": {
+          "@id": "https://www.tarikh.tech/#website"
+        },
+        "inLanguage": "en",
+        "breadcrumb": {
+          "@id": "https://www.tarikh.tech/contact#breadcrumb"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://www.tarikh.tech/contact#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.tarikh.tech/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Contact",
+            "item": "https://www.tarikh.tech/contact"
+          }
+        ]
       }
     ]
   }
@@ -95,7 +161,7 @@
 <body id="top">
   <a class="skip-link" href="#main">Skip to main content</a>
 
-        <header class="site-header" id="siteHeader">
+            <header class="site-header" id="siteHeader">
     <div class="container container--wide header-inner">
       <a class="brand" href="/" aria-label="Tarikh — home">
         <img src="/assets/images/primary.png" alt="Tarikh" class="brand-logo" height="32" width="30">
@@ -205,7 +271,7 @@
 
   </main>
 
-        <footer class="site-footer">
+            <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">

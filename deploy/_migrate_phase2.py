@@ -137,33 +137,120 @@ PAGES = {
 }
 
 NS = 'https://www.tarikh.tech'
+ORG_ID = f'{NS}/#organization'
+SITE_ID = f'{NS}/#website'
+SOFTWARE_ID = f'{NS}/#software'
+KHOWNS = ['Legal practice management', 'Case management', 'Court hearing tracking',
+          'Nepal court system', 'Bikram Samvat calendar', 'Law firm billing']
 
-# --------------------------------------------------------------------------- #
-# JSON-LD per page (Phase 2: cleaned-up, re-domained blocks)
-# --------------------------------------------------------------------------- #
-ORG = {
-    '@type': 'Organization',
-    'name': 'Tarikh',
-    'url': f'{NS}/',
-    'logo': {
+# The parent organisation is named only as text. No URL is published because
+# https://complynepal.com/ could not be verified from this environment.
+PARENT = {'@type': 'Organization', 'name': 'Comply Nepal'}
+
+CONTACT_EMAIL = 'support@complynepal.com'  # TODO(owner): confirm a @tarikh.tech address
+
+
+def organization():
+    return {
+        '@type': 'Organization',
+        '@id': ORG_ID,
+        'name': 'Tarikh',
+        'alternateName': 'तारिख',
+        'url': f'{NS}/',
+        'logo': {'@id': f'{NS}/#logo'},
+        'image': {'@id': f'{NS}/#logo'},
+        'description': ("Tarikh is legal practice management and law ERP software for law "
+                        "firms in Nepal, covering matters, court hearings and Peshi dates, "
+                        "clients, documents and NPR billing."),
+        'sameAs': ['https://www.instagram.com/tarikh.np/'],
+        'areaServed': {'@type': 'Country', 'name': 'Nepal'},
+        'parentOrganization': PARENT,
+        'knowsAbout': KHOWNS,
+        'contactPoint': {
+            '@type': 'ContactPoint',
+            'contactType': 'customer support',
+            'email': CONTACT_EMAIL,
+            'availableLanguage': ['English', 'Nepali'],
+        },
+    }
+
+
+def logo():
+    return {
         '@type': 'ImageObject',
+        '@id': f'{NS}/#logo',
         'url': f'{NS}/icon-512.png',
+        'contentUrl': f'{NS}/icon-512.png',
         'width': 512,
         'height': 512,
-    },
-    'sameAs': ['https://www.instagram.com/tarikh.np/'],
-    'areaServed': {'@type': 'Country', 'name': 'Nepal'},
-}
+        'caption': 'Tarikh',
+    }
 
-WEBPAGE = {
-    '@type': 'WebPage',
-    'name': 'Tarikh — Law ERP & Case Management Software for Nepal',
-    'url': f'{NS}/',
-    'isPartOf': {'@type': 'WebSite', 'name': 'Tarikh', 'url': f'{NS}/'},
-    'about': {'@type': 'SoftwareApplication', 'name': 'Tarikh', 'url': f'{NS}/'},
-    'inLanguage': 'en',
-}
 
+def website():
+    return {
+        '@type': 'WebSite',
+        '@id': SITE_ID,
+        'url': f'{NS}/',
+        'name': 'Tarikh',
+        'description': "Law ERP and legal practice management software for Nepal's law firms.",
+        'publisher': {'@id': ORG_ID},
+        'inLanguage': 'en',
+    }
+
+
+def software_app():
+    return {
+        '@type': 'SoftwareApplication',
+        '@id': SOFTWARE_ID,
+        'name': 'Tarikh',
+        'alternateName': ['Tarikh NP', 'Tarikh Nepal', 'तारिख'],
+        'applicationCategory': 'BusinessApplication',
+        'operatingSystem': 'Web',
+        'url': f'{NS}/',
+        'description': ("Legal practice management and law ERP software for Nepal's law "
+                        "firms: matters, court hearings and Peshi dates, clients, "
+                        "documents and NPR billing in one system."),
+        'provider': {'@id': ORG_ID},
+        'publisher': {'@id': ORG_ID},
+        'areaServed': {'@type': 'Country', 'name': 'Nepal'},
+        # featureList is limited to features the site actually demonstrates.
+        'featureList': [
+            'Matter and case management',
+            'Court hearing tracking and calendar',
+            'Peshi and Tarikh date management',
+            'Client and party management',
+            'Document management',
+            'Billing and invoice generation in NPR',
+            'Bikram Samvat calendar',
+            'Role-based access control',
+            'Audit logs',
+            'Firm reporting',
+        ],
+        'inLanguage': 'en',
+    }
+
+
+def webpage(path, cfg, extra=None):
+    route = cfg['route']
+    url = f'{NS}/' if route == '/' else f'{NS}{route}'
+    node = {
+        '@type': 'WebPage',
+        '@id': f'{url}#webpage',
+        'url': url,
+        'name': cfg['title'],
+        'description': cfg['desc'],
+        'isPartOf': {'@id': SITE_ID},
+        'inLanguage': 'en',
+        'breadcrumb': {'@id': f'{url}#breadcrumb'},
+    }
+    if extra:
+        node.update(extra)
+    return node
+
+# --------------------------------------------------------------------------- #
+# JSON-LD — one @graph per page with stable @ids so the entities link up
+# --------------------------------------------------------------------------- #
 FAQ = [
     ("Who is Tarikh designed for?",
      "Tarikh is built for modern Nepalese law firms and legal teams — solo practitioners, small firms and growing practices that want matters, clients, court events, documents and billing managed in one place."),
@@ -184,166 +271,196 @@ FAQ = [
 ]
 
 
-def breadcrumb(items):
+def breadcrumb(path, cfg, trail):
+    """trail: list of (name, url)."""
+    route = cfg['route']
+    url = f'{NS}/' if route == '/' else f'{NS}{route}'
     return {
         '@type': 'BreadcrumbList',
+        '@id': f'{url}#breadcrumb',
         'itemListElement': [
-            {'@type': 'ListItem', 'position': i + 1, 'name': n, 'item': u}
-            for i, (n, u) in enumerate(items)
+            {'@type': 'ListItem', 'position': i + 1, 'name': name, 'item': item}
+            for i, (name, item) in enumerate(trail)
         ],
     }
 
 
-SCHEMA = {
-    'index.html': [
-        ORG,
-        {
-            '@type': 'SoftwareApplication',
-            'name': 'Tarikh — Law ERP & Case Management Software',
-            'alternateName': ['Tarikh NP', 'Tarikh Nepal', 'तारिख'],
-            'applicationCategory': 'BusinessApplication',
-            'operatingSystem': 'Web',
-            'description': "Tarikh is legal practice management and law ERP software built specifically for Nepali law firms. It manages matters, court hearings, Peshi/Tarikh dates, clients, documents, billing and firm operations in one secure platform.",
-            'url': f'{NS}/',
-            'provider': ORG,
-            'featureList': [
-                'Matter & Case Management',
-                'Court Hearing Tracking & Calendar',
-                'Peshi/Tarikh Date Management',
-                'Client & Party Management',
-                'Document Management',
-                'Billing & Invoice Generation',
-                'Bikram Samvat (BS) Calendar',
-                'Role-Based Access Control',
-                'Audit Trail & Activity Logs',
-                'Firm Reporting',
-            ],
-            'inLanguage': 'en',
-        },
-        {'@type': 'WebSite', 'name': 'Tarikh', 'url': f'{NS}/', 'inLanguage': 'en',
-         'publisher': {'@type': 'Organization', 'name': 'Tarikh', 'url': f'{NS}/'}},
-        WEBPAGE,
-        {'@type': 'FAQPage', 'mainEntity': [
-            {'@type': 'Question', 'name': q,
-             'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in FAQ]},
-    ],
-    'features/index.html': [
-        {'@type': 'WebPage', 'name': 'Tarikh Features', 'url': f'{NS}/features',
-         'isPartOf': {'@type': 'WebSite', 'name': 'Tarikh', 'url': f'{NS}/'},
-         'about': {'@type': 'SoftwareApplication', 'name': 'Tarikh', 'url': f'{NS}/'},
-         'inLanguage': 'en'},
-        breadcrumb([('Home', f'{NS}/'), ('Features', f'{NS}/features')]),
-    ],
-    'pricing/index.html': [
-        {'@type': 'WebPage', 'name': 'Tarikh Pricing', 'url': f'{NS}/pricing',
-         'isPartOf': {'@type': 'WebSite', 'name': 'Tarikh', 'url': f'{NS}/'},
-         'about': {'@type': 'SoftwareApplication', 'name': 'Tarikh', 'url': f'{NS}/'},
-         'inLanguage': 'en'},
-        breadcrumb([('Home', f'{NS}/'), ('Pricing', f'{NS}/pricing')]),
-    ],
-    'about/index.html': [
-        {'@type': 'WebPage', 'name': 'About Tarikh', 'url': f'{NS}/about',
-         'isPartOf': {'@type': 'WebSite', 'name': 'Tarikh', 'url': f'{NS}/'},
-         'about': {'@type': 'SoftwareApplication', 'name': 'Tarikh', 'url': f'{NS}/'},
-         'inLanguage': 'en'},
-        breadcrumb([('Home', f'{NS}/'), ('About', f'{NS}/about')]),
-    ],
-    'contact/index.html': [
-        {'@type': 'WebPage', 'name': 'Contact Tarikh', 'url': f'{NS}/contact',
-         'isPartOf': {'@type': 'WebSite', 'name': 'Tarikh', 'url': f'{NS}/'},
-         'inLanguage': 'en'},
-        breadcrumb([('Home', f'{NS}/'), ('Contact', f'{NS}/contact')]),
-    ],
-    'privacy/index.html': [
-        {'@type': 'WebPage', 'name': 'Privacy Policy', 'url': f'{NS}/privacy',
-         'isPartOf': {'@type': 'WebSite', 'name': 'Tarikh', 'url': f'{NS}/'},
-         'inLanguage': 'en'},
-        breadcrumb([('Home', f'{NS}/'), ('Privacy Policy', f'{NS}/privacy')]),
-    ],
-    'terms/index.html': [
-        {'@type': 'WebPage', 'name': 'Terms of Service', 'url': f'{NS}/terms',
-         'isPartOf': {'@type': 'WebSite', 'name': 'Tarikh', 'url': f'{NS}/'},
-         'inLanguage': 'en'},
-        breadcrumb([('Home', f'{NS}/'), ('Terms of Service', f'{NS}/terms')]),
-    ],
-    'blog/index.html': [
-        {'@type': 'Blog', 'name': 'Tarikh Blog', 'url': f'{NS}/blog/',
-         'description': "Insights for Nepal's law firms on case management, court hearing tracking, Peshi/Tarikh dates and legal technology.",
-         'inLanguage': 'en',
-         'publisher': {'@type': 'Organization', 'name': 'Tarikh', 'url': f'{NS}/',
-                       'logo': {'@type': 'ImageObject', 'url': f'{NS}/icon-512.png', 'width': 512, 'height': 512}}},
-        breadcrumb([('Home', f'{NS}/'), ('Blog', f'{NS}/blog/')]),
-    ],
-}
+BLOG_TRAIL = [('Home', f'{NS}/'), ('Blog', f'{NS}/blog/')]
+
+
+def post_trail(post):
+    return BLOG_TRAIL + [(post['breadcrumb'], f'{NS}{post["slug"]}')]
+
 
 BLOG_POSTS = {
     'blog/nepal-court-hierarchy/index.html': dict(
         headline='Nepal court hierarchy explained: Supreme Court, High Courts and District Courts',
+        breadcrumb="Nepal court hierarchy",
         slug='/blog/nepal-court-hierarchy',
         published='2026-09-01',
         modified='2026-10-16',
         image='assets/images/blog/nepal-court-hierarchy.webp',
+        section='Nepal Court System',
     ),
     'blog/peshi-tarikh-date-tracking/index.html': dict(
         headline='How to track Peshi and Tarikh dates without the confusion',
+        breadcrumb="Peshi and Tarikh dates",
         slug='/blog/peshi-tarikh-date-tracking',
         published='2026-08-25',
         modified='2026-10-16',
         image='assets/images/blog/peshi-tarikh-date-tracking.webp',
+        section='Peshi / Tarikh Dates',
     ),
     'blog/case-management-software-nepal/index.html': dict(
         headline='Case management software for law firms in Nepal: what to look for',
+        breadcrumb="Choosing case management software",
         slug='/blog/case-management-software-nepal',
         published='2026-08-05',
         modified='2026-10-16',
         image='assets/images/blog/case-management-software-nepal.webp',
+        section='Case Management',
     ),
     'blog/law-erp-vs-spreadsheets/index.html': dict(
         headline='Law ERP vs spreadsheets for Nepali law firms',
+        breadcrumb="Law ERP vs spreadsheets",
         slug='/blog/law-erp-vs-spreadsheets',
         published='2026-07-25',
         modified='2026-10-16',
         image='assets/images/blog/law-erp-vs-spreadsheets.webp',
+        section='Law ERP',
     ),
     'blog/law-firm-billing-nepal/index.html': dict(
         headline="Law firm billing in Nepal: getting paid without the awkwardness",
+        breadcrumb="Law firm billing in Nepal",
         slug='/blog/law-firm-billing-nepal',
         published='2026-08-15',
         modified='2026-10-16',
         image='assets/images/blog/law-firm-billing-nepal.webp',
+        section='Billing & Invoicing',
     ),
     'blog/document-management-law-firms-nepal/index.html': dict(
         headline='Document management for law firms in Nepal',
+        breadcrumb="Document management",
         slug='/blog/document-management-law-firms-nepal',
         published='2026-07-15',
         modified='2026-10-16',
         image='assets/images/blog/document-management-law-firms-nepal.webp',
+        section='Document Management',
     ),
 }
 
-for path, cfg in BLOG_POSTS.items():
-    SCHEMA[path] = [
-        {
+# Pages where the product itself is the subject, so they carry the SoftwareApplication node.
+SOFTWARE_PAGES = {'index.html', 'features/index.html', 'pricing/index.html', 'about/index.html'}
+
+
+def graph_for(path, cfg):
+    nodes = [organization(), logo(), website()]
+    if path in SOFTWARE_PAGES:
+        nodes.append(software_app())
+
+    if path == 'index.html':
+        nodes.append(webpage(path, cfg, {
+            'about': {'@id': SOFTWARE_ID},
+            'primaryImageOfPage': {'@id': f'{NS}/#primaryimage'},
+            'mentions': {'@id': SOFTWARE_ID},
+        }))
+        nodes.append({
+            '@type': 'ImageObject',
+            '@id': f'{NS}/#primaryimage',
+            'url': OG_IMAGE,
+            'contentUrl': OG_IMAGE,
+            'width': 1200,
+            'height': 630,
+            'caption': "Tarikh dashboard: matters, upcoming court hearings and NPR billing",
+        })
+        nodes.append(breadcrumb(path, cfg, [('Home', f'{NS}/')]))
+        nodes.append({
+            '@type': 'FAQPage',
+            '@id': f'{NS}/#faq',
+            'isPartOf': {'@id': f'{NS}/#webpage'},
+            'about': {'@id': SOFTWARE_ID},
+            'mainEntity': [
+                {'@type': 'Question', 'name': q,
+                 'acceptedAnswer': {'@type': 'Answer', 'text': a}}
+                for q, a in FAQ
+            ],
+        })
+        return nodes
+
+    if path in BLOG_POSTS:
+        post = BLOG_POSTS[path]
+        url = f"{NS}{post['slug']}"
+        nodes.append(webpage(path, cfg, {
+            'isPartOf': {'@id': SITE_ID},
+            'breadcrumb': {'@id': f'{url}#breadcrumb'},
+            'mainEntity': {'@id': f'{url}#article'},
+            'about': {'@id': SOFTWARE_ID},
+        }))
+        nodes.append({
             '@type': 'BlogPosting',
-            'headline': cfg['headline'],
-            'url': f"{NS}{cfg['slug']}",
-            'mainEntityOfPage': f"{NS}{cfg['slug']}",
-            'datePublished': cfg['published'],
-            'dateModified': cfg['modified'],
-            'image': [f"{NS}/{cfg['image']}"],
-            'author': {'@type': 'Organization', 'name': 'Tarikh', 'url': f'{NS}/about'},
-            'publisher': {'@type': 'Organization', 'name': 'Tarikh', 'url': f'{NS}/',
-                          'logo': {'@type': 'ImageObject', 'url': f'{NS}/icon-512.png', 'width': 512, 'height': 512}},
+            '@id': f'{url}#article',
+            'headline': post['headline'],
+            'url': url,
+            'mainEntityOfPage': {'@id': f'{url}#webpage'},
+            'datePublished': post['published'],
+            'dateModified': post['modified'],
+            'articleSection': post['section'],
+            'image': [f'{NS}/{post["image"]}'],
+            'author': {'@id': ORG_ID},
+            'publisher': {'@id': ORG_ID},
+            'isPartOf': {'@id': SITE_ID},
             'inLanguage': 'en',
-        },
-        breadcrumb([('Home', f'{NS}/'), ('Blog', f'{NS}/blog/'),
-                    (cfg['headline'].split(':')[0], f"{NS}{cfg['slug']}")]),
-    ]
+        })
+        nodes.append(breadcrumb(path, cfg, post_trail(post)))
+        return nodes
+
+    if path == 'blog/index.html':
+        nodes.append(webpage(path, cfg, {
+            'isPartOf': {'@id': SITE_ID},
+            'breadcrumb': {'@id': f'{NS}/blog/#breadcrumb'},
+        }))
+        nodes.append({
+            '@type': 'Blog',
+            '@id': f'{NS}/blog/#blog',
+            'url': f'{NS}/blog/',
+            'name': 'Tarikh Blog',
+            'description': "Guides for Nepal's law firms on case management, court hearing and "
+                           "Peshi date tracking, NPR billing and legal technology.",
+            'publisher': {'@id': ORG_ID},
+            'isPartOf': {'@id': SITE_ID},
+            'inLanguage': 'en',
+        })
+        nodes.append(breadcrumb(path, cfg, BLOG_TRAIL))
+        return nodes
+
+    if path == '404.html':
+        # A noindex error page: no breadcrumb, because it is not part of the site tree.
+        nodes.append(webpage(path, cfg, {'isPartOf': {'@id': SITE_ID}}))
+        del nodes[-1]['breadcrumb']
+        return nodes
+
+    # Remaining inner pages: WebPage + breadcrumb.
+    names = {
+        'features/index.html': 'Features',
+        'pricing/index.html': 'Pricing',
+        'about/index.html': 'About',
+        'contact/index.html': 'Contact',
+        'privacy/index.html': 'Privacy Policy',
+        'terms/index.html': 'Terms of Service',
+    }
+    name = names.get(path, cfg['title'])
+    url = f'{NS}{cfg["route"]}'
+    nodes.append(webpage(path, cfg, {
+        'isPartOf': {'@id': SITE_ID},
+        'breadcrumb': {'@id': f'{url}#breadcrumb'},
+    }))
+    nodes.append(breadcrumb(path, cfg, [('Home', f'{NS}/'), (name, url)]))
+    return nodes
 
 
-# --------------------------------------------------------------------------- #
-# Shared chrome
-# --------------------------------------------------------------------------- #
+SCHEMA = {path: [{'@context': 'https://schema.org', '@graph': graph_for(path, cfg)}]
+          for path, cfg in PAGES.items()}
+
 NAV_LINKS = [('Product', '/#platform'), ('Features', '/features'),
              ('Pricing', '/pricing'), ('Blog', '/blog/'), ('About', '/about')]
 
