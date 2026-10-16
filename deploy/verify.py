@@ -430,6 +430,32 @@ def check_robots() -> None:
         fail('gate: robots.txt blocks CSS, JS or images')
 
 
+SUPERLATIVE_PATTERNS = [
+    (r'#\s*1\b', '#1'),
+    (r'\bnumber one\b', 'number one'),
+    (r'\bbest\b', 'best'),
+    (r'\bleading\b', 'leading'),
+    (r'\bworld[- ]class\b', 'world-class'),
+    (r'\btop[- ]rated\b', 'top-rated'),
+    (r'\bindustry[- ]leading\b', 'industry-leading'),
+    (r'\bmost advanced\b', 'most advanced'),
+    (r'\bunbeatable\b', 'unbeatable'),
+    (r'\bcheapest\b', 'cheapest'),
+]
+
+
+def check_superlatives(pages: list[pathlib.Path]) -> None:
+    for p in pages:
+        text = p.read_text(encoding='utf-8')
+        body = re.sub(r'<script type="application/ld\+json">.*?</script>', ' ', text, flags=re.S)
+        for pattern, label in SUPERLATIVE_PATTERNS:
+            for m in re.finditer(pattern, body, re.I):
+                start = max(0, m.start() - 60)
+                fail(f'gate: {rel(p)} uses the banned superlative "{label}": ...'
+                     f'{body[start:m.end() + 40].strip()[:110]}...')
+                break
+
+
 def check_image_weights() -> None:
     for p in sorted((ROOT / 'assets' / 'images').rglob('*')):
         if p.is_file() and p.stat().st_size > 300 * 1024:
@@ -532,6 +558,7 @@ def main() -> int:
     check_reachability(graph, pages)
     check_image_weights()
     check_fetchpriority(pages)
+    check_superlatives(pages)
 
     if '--serve' in sys.argv:
         check_serve(pages)
