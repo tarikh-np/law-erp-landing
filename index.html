@@ -49,14 +49,10 @@
   <meta name="apple-mobile-web-app-title" content="Tarikh">
   <meta name="application-name" content="Tarikh">
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500&display=swap" rel="stylesheet">
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/responsive.css">
+  <!-- Fonts: self-hosted, no third-party origin. Faces are bundled into css/site.min.css. -->
+  <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- Styles: one bundle, built by deploy/minify.py from fonts.css + style.css + responsive.css -->
+  <link rel="stylesheet" href="/css/site.min.css">
 
   <noscript>
     <style>
@@ -298,7 +294,7 @@
   <a class="skip-link" href="#main">Skip to main content</a>
 
   <!-- ============================ NAVIGATION ============================ -->
-              <header class="site-header" id="siteHeader">
+                    <header class="site-header" id="siteHeader">
     <div class="container container--wide header-inner">
       <a class="brand" href="/" aria-label="Tarikh — home">
         <img src="/assets/images/primary.png" alt="Tarikh" class="brand-logo" height="32" width="30">
@@ -365,7 +361,11 @@
 
         <div class="hero-visual">
           <figure class="hero-frame">
-            <img src="/assets/images/dashboard.png" alt="Tarikh legal practice management dashboard showing open matters, upcoming hearings, a calendar and billing" width="1536" height="1024" fetchpriority="high" decoding="async">
+            <picture>
+              <source type="image/avif" sizes="(max-width: 1024px) 92vw, 53vw" srcset="/assets/images/tarikh-law-erp-dashboard-640.avif 640w, /assets/images/tarikh-law-erp-dashboard-960.avif 960w, /assets/images/tarikh-law-erp-dashboard-1536.avif 1536w">
+              <source type="image/webp" sizes="(max-width: 1024px) 92vw, 53vw" srcset="/assets/images/tarikh-law-erp-dashboard-640.webp 640w, /assets/images/tarikh-law-erp-dashboard-960.webp 960w, /assets/images/tarikh-law-erp-dashboard-1536.webp 1536w">
+              <img src="/assets/images/tarikh-law-erp-dashboard-640.png" alt="Tarikh law ERP dashboard showing open matters, upcoming court hearings with Peshi dates, a calendar and NPR billing" width="1536" height="1024" fetchpriority="high" decoding="async">
+            </picture>
           </figure>
         </div>
 
@@ -1841,7 +1841,7 @@
   </main>
 
   <!-- ============================ FOOTER ============================ -->
-              <footer class="site-footer">
+                    <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">

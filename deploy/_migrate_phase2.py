@@ -647,14 +647,10 @@ def head_html(path, cfg):
         '  <meta name="apple-mobile-web-app-title" content="Tarikh">',
         '  <meta name="application-name" content="Tarikh">',
         '',
-        '  <!-- Fonts -->',
-        '  <link rel="preconnect" href="https://fonts.googleapis.com">',
-        '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
-        '  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500&display=swap" rel="stylesheet">',
-        '',
-        '  <!-- Styles -->',
-        '  <link rel="stylesheet" href="/css/style.css">',
-        '  <link rel="stylesheet" href="/css/responsive.css">',
+        '  <!-- Fonts: self-hosted, no third-party origin. Faces are bundled into css/site.min.css. -->',
+        '  <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>',
+        '  <!-- Styles: one bundle, built by deploy/minify.py from fonts.css + style.css + responsive.css -->',
+        '  <link rel="stylesheet" href="/css/site.min.css">',
         '',
         '''  <noscript>
     <style>

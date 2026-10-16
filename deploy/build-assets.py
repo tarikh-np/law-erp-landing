@@ -249,8 +249,11 @@ def build_thumbs():
 # --------------------------------------------------------------------------- #
 # Hero derivatives
 # --------------------------------------------------------------------------- #
-HERO_SOURCE = ROOT / 'assets' / 'images' / 'tarikh-law-erp-dashboard.png'
+# The 1536x1024 master lives outside the published tree so no served image is
+# over the 300 KB budget; only the derivatives below ship.
+HERO_SOURCE = ROOT / 'deploy' / 'source-images' / 'tarikh-law-erp-dashboard-master.png'
 HERO_NAME = 'tarikh-law-erp-dashboard'
+HERO_OUT = ROOT / 'assets' / 'images'
 HERO_WIDTHS = (640, 960, 1536)
 HERO_ASPECT = 1536 / 1024
 
@@ -260,7 +263,8 @@ def build_hero():
         print('hero source missing:', HERO_SOURCE)
         return
     src = Image.open(HERO_SOURCE).convert('RGB')
-    dest = HERO_SOURCE.parent
+    dest = HERO_OUT
+    dest.mkdir(parents=True, exist_ok=True)
 
     for w in HERO_WIDTHS:
         h = round(w / HERO_ASPECT)
@@ -269,28 +273,21 @@ def build_hero():
         resized.save(webp, 'WEBP', quality=76, method=6)
         print('wrote', webp.name, f'{webp.stat().st_size // 1024} KB')
 
-    # PNG fallback for the <img src>, kept under the 300 KB budget.
-    fallback = dest / f'{HERO_NAME}-960.png'
-    src.resize((960, round(960 / HERO_ASPECT)), Image.LANCZOS).save(
+    # PNG fallback for the <img src>, used only by browsers with neither AVIF nor
+    # WebP. Kept at the smallest width so it stays full-colour and under 300 KB
+    # rather than quantised at a larger size.
+    fallback = dest / f'{HERO_NAME}-640.png'
+    src.resize((640, round(640 / HERO_ASPECT)), Image.LANCZOS).save(
         fallback, 'PNG', optimize=True, bits=8)
     png_kb = fallback.stat().st_size // 1024
     print('wrote', fallback.name, f'{png_kb} KB')
-
     if png_kb >= 300:
-        # Quantise harder until the fallback fits the budget.
-        for colors in (128, 96, 64):
-            im = src.resize((960, round(960 / HERO_ASPECT)), Image.LANCZOS)
-            im.quantize(colors=colors, method=Image.MEDIANCUT, dither=Image.FLOYDSTEINBERG).save(
-                fallback, 'PNG', optimize=True)
-            png_kb = fallback.stat().st_size // 1024
-            print(f'  requantised to {colors} colours -> {png_kb} KB')
-            if png_kb < 300:
-                break
+        raise SystemExit(f'{fallback.name} is {png_kb} KB, over the 300 KB budget')
 
 
 def build_avif_cli():
-    """AVIF is produced with sharp (libvips), see deploy/build-avif.mjs."""
-    print('AVIF: run `node deploy/build-avif.mjs` (uses sharp)')
+    """AVIF is produced with sharp, because Pillow cannot encode AVIF here."""
+    print('AVIF: run `node deploy/build-avif.cjs` (uses sharp, see deploy/ASSETS.md)')
 
 
 def main():
@@ -303,6 +300,7 @@ def main():
         build_thumbs()
     if which in ('hero', 'all'):
         build_hero()
+        build_avif_cli()
 
 
 if __name__ == '__main__':

@@ -18,6 +18,8 @@ Gates
   7  optional: every page returns 200 from a local server
   8  no file in assets/images over 300 KB; every <img> has alt, width and height;
      only the hero carries fetchpriority="high"
+  9  one CSS bundle (/css/site.min.css), rebuilt from its sources by deploy/minify.py
+     and not stale; no third-party font origin anywhere in the HTML
 """
 from __future__ import annotations
 
@@ -539,6 +541,55 @@ def check_serve(pages: list[pathlib.Path]) -> None:
 
 
 # --------------------------------------------------------------------------- #
+# 9 — asset pipeline
+# --------------------------------------------------------------------------- #
+def check_assets(pages: list[pathlib.Path]) -> None:
+    """The pages must ship one stylesheet bundle, built and up to date, and no
+    third-party origin: the fonts were moved onto the domain in Phase 6."""
+    import importlib.util
+
+    minifier = ROOT / 'deploy' / 'minify.py'
+    if not minifier.exists():
+        fail('gate 9: deploy/minify.py is missing')
+        return
+    spec = importlib.util.spec_from_file_location('tarikh_minify', minifier)
+    module = importlib.util.module_from_spec(spec)
+    try:
+        spec.loader.exec_module(module)
+        content = module.build()
+    except SystemExit as exc:  # minifier refuses to run: broken input
+        fail(f'gate 9: deploy/minify.py could not build: {exc}')
+        return
+    out_path = ROOT / module.CSS_OUT
+    if not out_path.exists():
+        fail(f'gate 9: {module.CSS_OUT} is missing -- run python deploy/minify.py')
+    elif out_path.read_text(encoding='utf-8') != content:
+        fail(f'gate 9: {module.CSS_OUT} is stale -- run python deploy/minify.py')
+
+    for p in pages:
+        text = p.read_text(encoding='utf-8')
+        r = rel(p)
+        bundles = re.findall(r'<link rel="stylesheet" href="(/css/[^"]+)"', text)
+        if bundles != ['/css/site.min.css']:
+            fail(f'gate 9: {r} loads {bundles}, expected exactly /css/site.min.css')
+        for stale in ('/css/style.css', '/css/responsive.css', '/css/fonts.css'):
+            if stale in text:
+                fail(f'gate 9: {r} links the source stylesheet {stale} instead of the bundle')
+        for origin in ('fonts.googleapis.com', 'fonts.gstatic.com'):
+            if origin in text:
+                fail(f'gate 9: {r} still calls a third-party origin ({origin}); '
+                     'fonts are self-hosted in /assets/fonts')
+        for preload in re.findall(r'<link rel="preload" href="(/assets/fonts/[^"]+)"', text):
+            if not (ROOT / preload.lstrip('/')).is_file():
+                fail(f'gate 9: {r} preloads {preload}, which is not in the repo')
+    fonts = sorted((ROOT / 'assets' / 'fonts').glob('*.woff2')) if (ROOT / 'assets' / 'fonts').is_dir() else []
+    if not fonts:
+        fail('gate 9: no self-hosted fonts in assets/fonts')
+    notes.append(f'gate 9: CSS bundle {module.CSS_OUT} ({len(content) // 1024} KB), '
+                 f'{len(fonts)} self-hosted font file(s)')
+
+
+# --------------------------------------------------------------------------- #
 def main() -> int:
     check_complynepal()
     sitemap_locs = check_sitemap()
@@ -559,6 +610,7 @@ def main() -> int:
     check_image_weights()
     check_fetchpriority(pages)
     check_superlatives(pages)
+    check_assets(pages)
 
     if '--serve' in sys.argv:
         check_serve(pages)

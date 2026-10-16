@@ -574,6 +574,10 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   box-shadow: 0 40px 80px -32px rgba(0, 40, 120, 0.32), 0 18px 36px -24px rgba(0, 40, 120, 0.16), 0 2px 6px rgba(0, 40, 120, 0.04);
 }
 
+.hero-frame picture {
+  display: block;
+}
+
 .hero-frame img {
   display: block;
   width: 100%;
