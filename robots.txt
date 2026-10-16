@@ -1,6 +1,6 @@
 # Tarikh — Nepal Law ERP & Case Management Software
-# Hosted at: https://tarikh.complynepal.com/ | Instagram: @tarikh.np
-# Sitemap: https://tarikh.complynepal.com/sitemap.xml
+# Hosted at: https://www.tarikh.tech/ | Instagram: @tarikh.np
+# Sitemap: https://www.tarikh.tech/sitemap.xml
 
 User-agent: *
 Allow: /
@@ -25,4 +25,4 @@ User-agent: LinkedInBot
 Allow: /
 
 # Sitemap index
-Sitemap: https://tarikh.complynepal.com/sitemap.xml
+Sitemap: https://www.tarikh.tech/sitemap.xml
