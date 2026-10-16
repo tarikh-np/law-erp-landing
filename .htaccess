@@ -1,0 +1,69 @@
+# Tarikh — Apache / cPanel configuration.
+# Requires mod_rewrite and mod_headers. Works in a document root or in a
+# subdirectory vhost pointed at this repository.
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # ---------------------------------------------------------------- 1. https
+  # http:// anything -> https://www.tarikh.tech
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^(.*)$ https://www.tarikh.tech/$1 [R=301,L]
+
+  # ------------------------------------------------------------------ 2. www
+  # apex tarikh.tech -> www.tarikh.tech (single hop, keeps the path and query)
+  RewriteCond %{HTTP_HOST} ^tarikh\.tech$ [NC]
+  RewriteRule ^(.*)$ https://www.tarikh.tech/$1 [R=301,L]
+
+  # --------------------------------------------- 3. old flat paths -> clean URLs
+  RewriteRule ^index\.html$                                  /                             [R=301,L]
+  RewriteRule ^features\.html$                               /features                     [R=301,L]
+  RewriteRule ^pricing\.html$                                /pricing                      [R=301,L]
+  RewriteRule ^privacy\.html$                                /privacy                      [R=301,L]
+  RewriteRule ^terms\.html$                                  /terms                        [R=301,L]
+  RewriteRule ^blog/index\.html$                             /blog/                        [R=301,L]
+  RewriteRule ^blog/blog-post-nepal-court-hierarchy\.html$   /blog/nepal-court-hierarchy   [R=301,L]
+
+  # Existing files and directories win; everything else falls through to the
+  # 404 handler below, which returns a real 404 status.
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+</IfModule>
+
+# DirectoryIndex makes /features, /pricing and the rest resolve to
+# <dir>/index.html with no redirect hop.
+DirectoryIndex index.html
+
+# ------------------------------------------------------------------ 4. headers
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=()"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  # HSTS: uncomment only once HTTPS is confirmed on both hosts, then commit to it.
+  # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+  # CSS and JS filenames carry a content hash, and images and fonts are
+  # referenced by content, so immutable is safe on these paths.
+  <FilesMatch "\.(css|js|woff2|webp|avif|png|jpe?g|svg|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  <FilesMatch "\.(html|xml|txt|webmanifest)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType font/woff2 .woff2
+  AddType image/webp .webp
+  AddType image/avif .avif
+  AddType application/manifest+json .webmanifest
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/xml application/javascript application/json application/manifest+json image/svg+xml
+</IfModule>
+
+ErrorDocument 404 /404.html
