@@ -121,10 +121,29 @@ All of the above are now replaced with `https://www.tarikh.tech`. The only inten
 - `deploy/REDIRECTS.md` — the old-host redirect map to deploy on `tarikh.complynepal.com`.
 
 ### Phase 6 — Performance
-- `dashboard.png` converted to AVIF/WebP at 640/960/1536 px, served through `<picture>`/`srcset` with explicit dimensions and `fetchpriority="high"` on the hero.
-- Unused `assets/images/dashboard2.png` deleted.
-- Below-the-fold images `loading="lazy"`; blog thumbnails distinct, compressed with explicit dimensions.
-- CSS/JS minified into `*.min.*` by `deploy/build-assets.py` (no build system). Fonts self-hosted (latin subset, `font-display: swap`, preloaded) to drop the Google Fonts dependency.
+- **Hero image.** `dashboard.png` (1 MB) is replaced by `tarikh-law-erp-dashboard-{640,960,1536}.{avif,webp}` served through `<picture>`/`srcset`/`sizes` with explicit `width`/`height`, `fetchpriority="high"` and `decoding="async"`. Mobile (92 vw → the 640 px candidate) downloads **15 KB AVIF / 17 KB WebP**, far under the 150 KB budget. The 640 px PNG (225 KB) is the fallback for browsers with neither format. The 1 MB master now lives in `deploy/source-images/`, outside the published tree.
+- **Dead weight.** Unused `assets/images/dashboard2.png` (1.2 MB) deleted; nothing referenced it. Every image in `assets/images` is now under 300 KB, enforced by gate 8.
+- **Below the fold.** All content images `loading="lazy"` with explicit dimensions; only the hero is eager and `fetchpriority="high"`.
+- **Fonts.** Inter (variable 400–700) and Newsreader (500–600 + italic 500), latin and latin-ext subsets, are downloaded into `assets/fonts` and served from the domain with `font-display: swap`. The two `fonts.googleapis.com` preconnects, the `fonts.gstatic.com` preconnect and the third-party stylesheet are gone from all 15 pages; the body weight is preloaded. Regenerate with `python deploy/fetch-fonts.py`.
+- **One stylesheet.** `deploy/minify.py` bundles `fonts.css` + `style.css` + `responsive.css` into `/css/site.min.css` (72 KB from 91 KB). The minifier is whitespace- and comment-only — it aborts if it would touch anything else — and gate 9 fails when the bundle is stale, when a page links a source stylesheet, or when any third-party font origin reappears. Correctness was checked by headless-Chrome screenshots at 1440 px and 390 px: **byte-identical** to the unbundled CSS.
+- **JavaScript is deliberately not minified.** Line comments and automatic semicolon insertion make newline-stripping unsafe without a real parser, and `js/main.js` is 5.6 KB; the host compresses it. `defer` is kept on every page.
+- **Layout shift.** `[data-reveal]` only animates `opacity`/`transform`, which do not affect layout; the hero has intrinsic `width`/`height`, so CLS stays low.
+
+**Lighthouse 12.6, mobile (default simulated throttling), headless Chrome, before vs after.**
+
+| Page | Perf before | Perf after | LCP before | LCP after | Transfer before | Transfer after |
+|---|---|---|---|---|---|---|
+| Home `/` | 65 | **84** | 9178 ms | **3681 ms** | 1424 KB (243 KB third-party) | **470 KB, 0 third-party** |
+| Features `/features` | 90 | **95** | 3490 ms | **2554 ms** | 291 KB | 302 KB |
+| Post `/blog/nepal-court-hierarchy` | 100 | 95 | 1652 ms | 2632 ms | 115 KB | 307 KB |
+
+CLS 0.000–0.003 and TBT 0 ms on all six runs.
+
+Read the numbers with three caveats, and re-measure on the deployed domain:
+
+1. **Local, uncompressed.** `python -m http.server` sends no gzip/brotli, so the 72 KB CSS bundle and the 176 KB of fonts transfer raw. On a production host with compression the same pages are a fraction of that.
+2. **The post page's “before” never loaded the site's webfonts at all** — the old `blog-post-nepal-court-hierarchy.html` was missing the Google Fonts stylesheet, so it rendered in fallback fonts (0 font requests). The new page loads Newsreader and Inter like every other page, plus a hero image. That is the whole of the regression: it is the old page that was broken, not the new one.
+3. **The homepage's LCP element is the header wordmark, not the hero image**; the hero image fell from 992 KB to 40 KB transferred.
 
 ---
 
@@ -189,10 +208,25 @@ The full TODO list is repeated in the final migration report.
 Run:
 
 ```bash
-python deploy/verify.py
+python deploy/verify.py            # static gates, fast
+python deploy/verify.py --serve    # also fetches every page from a local server
 ```
 
-It exits non-zero if any gate fails and is the source of truth for "done". Full details in `deploy/VERIFY.md`.
+It exits non-zero if any of the nine gates fails: the old host is gone, every page
+honours the head contract, everything agrees on `https://www.tarikh.tech`, every
+internal link and anchor resolves, the JSON-LD parses with no forbidden field and a
+FAQ that matches the visible copy, every page is two clicks from the homepage,
+every image is inside budget, and the CSS bundle is built and current.
+
+It is the source of truth for "done". Gate-by-gate detail and the companion
+scripts (`minify.py`, `build-sitemap.py`, `build-assets.py`, `fetch-fonts.py`,
+`_migrate_phase2.py`) are in `deploy/VERIFY.md`.
+
+Last full run on this branch: **all nine gates pass**, 15 pages checked.
+
+Out of scope for the script, and therefore manual: the 301 map on the old
+subdomain, the host's real 404 status, HSTS enablement, and the Rich Results Test /
+Schema Markup Validator runs after deploy.
 
 ---
 
