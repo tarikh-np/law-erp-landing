@@ -506,18 +506,40 @@ def check_reachability(graph: dict[str, set[str]], pages: list[pathlib.Path]) ->
 # 7 — local serve
 # --------------------------------------------------------------------------- #
 def check_serve(pages: list[pathlib.Path]) -> None:
+    """Boot a local server that behaves like the hosts in deploy/: unknown paths
+    answer with 404.html and a real 404 status, and clean URLs redirect once."""
     import http.server
     import socket
     import threading
     import urllib.error
     import urllib.request
 
-    handler = lambda *a, **kw: http.server.SimpleHTTPRequestHandler(  # noqa: E731
-        *a, directory=str(ROOT), **kw)
+    error_page = ROOT / '404.html'
+
+    class Handler(http.server.SimpleHTTPRequestHandler):
+        def __init__(self, *a, **kw):
+            super().__init__(*a, directory=str(ROOT), **kw)
+
+        def log_message(self, *a):  # keep the report readable
+            pass
+
+        def send_error(self, code, message=None, explain=None):
+            """Serve the site's 404 page with the real status code, like the host."""
+            if code == 404 and error_page.exists():
+                body = error_page.read_bytes()
+                self.send_response(404)
+                self.send_header('Content-Type', 'text/html; charset=utf-8')
+                self.send_header('Content-Length', str(len(body)))
+                self.end_headers()
+                if self.command != 'HEAD':
+                    self.wfile.write(body)
+                return
+            super().send_error(code, message, explain)
+
     with socket.socket() as s:
         s.bind(('127.0.0.1', 0))
         port = s.getsockname()[1]
-    httpd = http.server.ThreadingHTTPServer(('127.0.0.1', port), handler)
+    httpd = http.server.ThreadingHTTPServer(('127.0.0.1', port), Handler)
     httpd.daemon_threads = True
     t = threading.Thread(target=httpd.serve_forever, daemon=True)
     t.start()
@@ -534,8 +556,47 @@ def check_serve(pages: list[pathlib.Path]) -> None:
                 fail(f'gate 7: {url} returned {exc.code}')
             except Exception as exc:  # noqa: BLE001
                 fail(f'gate 7: {url} failed: {exc}')
-        notes.append('gate 7: directory-URL "/features" needs the host to serve '
-                     'features/index.html (python -m http.server redirects to /features/).')
+
+        # Clean URLs: /features must redirect once to /features/ and end at 200.
+        for clean in ('/features', '/blog/nepal-court-hierarchy'):
+            hops: list[int] = []
+
+            class NoRedirect(urllib.request.HTTPRedirectHandler):
+                def redirect_request(self, *a, **kw):
+                    return None
+
+            opener = urllib.request.build_opener(NoRedirect)
+            try:
+                with opener.open(base + clean, timeout=10) as resp:
+                    hops.append(resp.status)
+            except urllib.error.HTTPError as exc:
+                hops.append(exc.code)
+                location = exc.headers.get('Location', '')
+                target = location if location.startswith('http') else base + location
+                if exc.code == 301 and location.endswith('/'):
+                    with urllib.request.urlopen(target, timeout=10) as resp:
+                        hops.append(resp.status)
+            if hops != [301, 200]:
+                fail(f'gate 7: clean URL {clean} did 301 -> 200, did {hops}')
+
+        # Unknown path: real 404 status, served from 404.html, and it is noindex.
+        try:
+            urllib.request.urlopen(base + '/does-not-exist', timeout=10)
+            fail('gate 7: /does-not-exist returned 200 instead of a 404')
+        except urllib.error.HTTPError as exc:
+            if exc.code != 404:
+                fail(f'gate 7: /does-not-exist returned {exc.code}, expected 404')
+            body = exc.read()
+            if error_page.exists() and body != error_page.read_bytes():
+                fail('gate 7: the 404 response is not this site\'s 404.html')
+            text = body.decode('utf-8', 'replace')
+            if 'noindex' not in text:
+                fail('gate 7: 404.html is missing <meta name="robots" content="noindex">')
+            notes.append('gate 7: /does-not-exist answered with 404.html and status 404 '
+                         'under the emulated handler; the deployed host must do the same '
+                         '(see _redirects / _headers / vercel.json / .htaccess / nginx).')
+        except Exception as exc:  # noqa: BLE001
+            fail(f'gate 7: /does-not-exist failed: {exc}')
     finally:
         httpd.shutdown()
 

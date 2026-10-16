@@ -225,8 +225,12 @@ scripts (`minify.py`, `build-sitemap.py`, `build-assets.py`, `fetch-fonts.py`,
 Last full run on this branch: **all nine gates pass**, 15 pages checked.
 
 Out of scope for the script, and therefore manual: the 301 map on the old
-subdomain, the host's real 404 status, HSTS enablement, and the Rich Results Test /
-Schema Markup Validator runs after deploy.
+subdomain (it lives on that host), HSTS enablement (only after HTTPS is confirmed),
+and the Rich Results Test / Schema Markup Validator runs after deploy. The 404
+contract **is** checked: `--serve` boots a handler that answers unknown paths with
+`404.html` at status 404 and asserts the page is `noindex`, and it asserts each
+clean URL does one 301 into its directory. The deployed host has to implement the
+same behaviour; the configs in `deploy/` and at the repo root do.
 
 ---
 

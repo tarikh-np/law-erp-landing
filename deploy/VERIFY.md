@@ -20,7 +20,7 @@ Python 3.10+, standard library only — no packages, no framework.
 | 4 | Links resolve | An internal link points at a file that does not exist, an `#anchor` that no element defines, `href="#"`, an `index.html` URL, or a relative `../` path |
 | 5 | Structured data | A JSON-LD block does not parse, an `@id` reference never resolves, the FAQ schema text differs from the visible `#faq` copy, or a forbidden field is present (fake phone, `interactionStatistic`, `price: "0"`, `wordCount`, `foundingDate`, an unverified `sameAs`) |
 | 6 | Reachability | An indexable page cannot be reached from the homepage within two clicks (orphans are printed) |
-| 7 | Serves (`--serve`) | Any page returns a non-200 from a local `python -m http.server` |
+| 7 | Serves (`--serve`) | Any page returns a non-200 from the local server; a clean URL (`/features`, `/blog/nepal-court-hierarchy`) does not do exactly one 301 into its `index.html`; or `/does-not-exist` does not answer with `404.html` at status 404 carrying `noindex` (the local handler emulates the behaviour the host configs specify) |
 | 8 | Images | A file in `assets/images` is over 300 KB, an `<img>` lacks `alt`/`width`/`height`, or anything but the hero carries `fetchpriority="high"` |
 | 9 | Asset pipeline | `css/site.min.css` is missing or stale against its sources, a page links `/css/style.css`, `/css/responsive.css` or `/css/fonts.css` directly, a page still calls `fonts.googleapis.com` / `fonts.gstatic.com`, or the preloaded font is not in the repo |
 
