@@ -46,6 +46,9 @@
 
   --font-display: "Newsreader", "Iowan Old Style", Georgia, serif;
   --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Devanagari has no bundled face: pair the system Nepali fonts in the order
+     that renders matras and conjuncts correctly on each platform. */
+  --font-np: "Noto Sans Devanagari", "Nirmala UI", "Mangal", "Devanagari Sangam MN", "Kohinoor Devanagari", "Noto Sans Devanagari UI", system-ui, sans-serif;
 
   --container: 1200px;
   --container-wide: 1440px;
@@ -2133,6 +2136,31 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .breadcrumb a:hover { color: var(--primary); }
 .breadcrumb [aria-current="page"] { color: var(--text); font-weight: 500; }
 
+.section--page-hero.section--tool-hero {
+  padding-top: clamp(24px, 3vw, 36px);
+  padding-bottom: clamp(18px, 2vw, 28px);
+  background: linear-gradient(110deg, rgba(0, 86, 255, 0.055), transparent 58%);
+}
+
+.section--tool-hero .breadcrumb ol {
+  width: fit-content;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 30px;
+  padding: 8px 13px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+.section--tool-hero .breadcrumb li + li::before {
+  content: "›";
+  padding-inline: 9px;
+  color: var(--text-faint);
+}
+
+.section--tool-hero .section-sub { max-width: 680px; }
+
 /* ------------------------------ Page hero (inner) ------------------------------ */
 .section--page-hero { padding-bottom: clamp(36px, 5vw, 60px); }
 .section--page-hero .section-head { text-align: left; margin-inline: 0; }
@@ -2898,4 +2926,813 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 18px); }
   .blog-card--featured { grid-column: span 1; }
   .topic-grid { grid-template-columns: 1fr; }
   .blog-post-hero { padding-block: 44px; }
+}
+/* ==========================================================================
+   Tools — Preeti ⇄ Unicode and BS ⇄ AD
+   Uses the existing tokens only. The workbench is one surface, the panes are
+   separated by hairlines, and the only accent is the legal-day stamp on the
+   date slip.
+   ========================================================================== */
+
+.section--tool {
+  /* One spacing ladder for both tool pages: card gutters, the gaps inside a card
+     and the rhythm between cards all come from here, so the text converter, the
+     document converter and the cards on /tools line up with each other. */
+  --tool-space-1: 4px;
+  --tool-space-2: 8px;
+  --tool-space-3: 12px;
+  --tool-space-4: 16px;
+  --tool-space-5: 24px;
+  --tool-space-6: 32px;
+  /* One inset for every card on these pages: the labels, the bars, the text and
+     the document heading all start on the same line. */
+  --tool-card-pad: clamp(20px, 2.6vw, 28px);
+  --tool-gutter: var(--tool-card-pad);
+  --tool-gap: 20px;
+  --tool-block: clamp(30px, 4vw, 46px);
+  --tool-radius: var(--radius-lg);
+  padding-top: clamp(8px, 2vw, 18px);
+}
+
+/* --------------------------------- Tool hero ------------------------------- */
+.tool-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 0;
+  margin-top: 24px;
+  list-style: none;
+  padding: 0;
+  font-size: 13.5px;
+  color: var(--text-muted);
+}
+
+.tool-meta li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding-right: 18px;
+}
+
+.tool-meta li + li { padding-left: 18px; border-left: 1px solid var(--border-strong); }
+
+.tool-meta .icon { width: 15px; height: 15px; color: var(--primary); }
+
+/* -------------------------------- Workbench -------------------------------- */
+.tool-shell {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--tool-radius);
+  box-shadow: var(--shadow-2);
+  overflow: hidden;
+}
+
+.tool-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--tool-space-3);
+  padding: 11px var(--tool-gutter);
+  background: var(--background);
+  border-bottom: 1px solid var(--border);
+}
+
+.seg {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #EFF1F5;
+}
+
+.seg-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 7px 14px;
+  border-radius: 7px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: background-color 0.18s var(--ease), color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+
+.seg-btn:hover { color: var(--text); }
+
+.seg-btn[aria-pressed="true"] {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.1), inset 0 0 0 1px var(--border);
+}
+
+.seg-arrow { color: var(--primary); font-weight: 700; }
+
+.tool-bar-note {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tool-bar-note .icon { width: 14px; height: 14px; color: var(--success); }
+
+/* ---------------------------------- Panes ---------------------------------- */
+.tool-panes { display: grid; grid-template-columns: 1fr 1fr; }
+
+.tool-pane { display: flex; flex-direction: column; min-width: 0; }
+
+.tool-pane + .tool-pane { border-left: 1px solid var(--border); }
+
+.tool-pane--out { background: var(--background); }
+
+.tool-pane-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--tool-space-3);
+  padding: var(--tool-space-4) var(--tool-gutter) 0;
+}
+
+.tool-pane-heading {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.tool-pane-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.tool-pane-hint {
+  max-width: 42ch;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.tool-pane--out .tool-pane-label { color: var(--primary); }
+
+.tool-pane-tag {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.tool-pane:focus-within { box-shadow: inset 0 0 0 2px var(--primary); }
+
+.tool-field {
+  display: block;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 340px;
+  padding: var(--tool-space-3) var(--tool-gutter) var(--tool-space-4);
+  border: 0;
+  background: transparent;
+  font-family: var(--font-np);
+  font-size: 16.5px;
+  line-height: 1.85;
+  color: var(--text);
+  resize: vertical;
+  tab-size: 4;
+}
+
+.tool-field::placeholder { color: var(--text-muted); opacity: 1; }
+.tool-field:focus { outline: none; }
+
+.tool-field--preeti { font-family: "Preeti", "Preeti Regular", var(--font-body); font-size: 16px; }
+
+/* --------------------------------- Actions --------------------------------- */
+.tool-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: var(--tool-space-3) var(--tool-gutter);
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.tool-actions .btn { min-height: 40px; }
+
+.tool-status {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.tool-alert {
+  margin: 0;
+  padding: var(--tool-space-3) var(--tool-gutter);
+  border-top: 1px solid var(--border);
+  background: var(--warning-soft);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.tool-alert:first-of-type { border-top: 1px solid var(--border); }
+
+.tool-alert--error { background: var(--danger-soft); }
+.tool-alert--info { background: var(--primary-tint); }
+
+.tool-alert strong { font-weight: 650; }
+
+.tool-alert code {
+  font-family: var(--font-body);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* ---------------------------- Document converter --------------------------- */
+.tool-doc {
+  margin-top: var(--tool-block);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--tool-radius);
+  box-shadow: var(--shadow-2);
+  overflow: hidden;
+}
+
+.tool-doc-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--tool-space-4) var(--tool-space-6);
+  padding: var(--tool-card-pad) var(--tool-card-pad) 0;
+}
+
+.tool-doc-copy { flex: 1 1 420px; min-width: 0; }
+
+.tool-doc-kicker {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: var(--tool-space-2);
+}
+
+.tool-doc h2 {
+  font-family: var(--font-display);
+  font-size: clamp(21px, 2.4vw, 26px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.tool-doc-sub {
+  margin-top: var(--tool-space-2);
+  max-width: 58ch;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+.tool-doc-mode { flex: 0 1 280px; min-width: 0; }
+
+.doc-select {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.doc-select:focus { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.doc-drop {
+  position: relative;
+  margin: var(--tool-card-pad) var(--tool-card-pad) 0;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--background);
+  transition: border-color 0.18s var(--ease), background-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+
+.doc-drop.is-drag {
+  border-color: var(--primary);
+  background: var(--primary-tint);
+}
+
+.doc-drop:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-tint);
+}
+
+/* The file input stays in the tab order; the drop area shows its focus ring. */
+.doc-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.doc-pick {
+  display: flex;
+  align-items: center;
+  gap: var(--tool-space-4);
+  padding: var(--tool-space-4);
+  border-radius: inherit;
+  cursor: pointer;
+}
+
+.doc-pick-icon {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--primary-tint);
+  color: var(--primary);
+}
+
+.doc-pick-icon .icon { width: 20px; height: 20px; }
+
+.doc-pick-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.doc-pick-text strong { font-size: 15px; font-weight: 650; color: var(--text); }
+.doc-pick-text span { font-size: 13.5px; line-height: 1.55; color: var(--text-muted); }
+
+.doc-drop.has-file .doc-pick { display: none; }
+
+.doc-file {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--tool-space-3);
+  padding: var(--tool-space-3) var(--tool-space-4);
+}
+
+.doc-file[hidden] { display: none; }
+
+.doc-file-icon {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--primary-tint);
+  color: var(--primary);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.doc-file-text { display: flex; flex-direction: column; gap: 2px; flex: 1 1 200px; min-width: 0; }
+
+.doc-file-name {
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.doc-file-meta { font-size: 12.5px; color: var(--text-muted); }
+
+.doc-file-actions { display: flex; gap: var(--tool-space-2); margin-left: auto; }
+.doc-file-actions .copy-btn { cursor: pointer; }
+
+.doc-hint {
+  padding: var(--tool-space-2) var(--tool-card-pad) var(--tool-card-pad);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.doc-download[hidden] { display: none; }
+
+/* Keeps the action row steady while the label changes to "Converting…". */
+#docConvert { min-width: 190px; }
+
+.tool-doc .btn.is-busy::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: docSpin 0.7s linear infinite;
+}
+
+@keyframes docSpin { to { transform: rotate(360deg); } }
+
+/* ---------------------------------- Notes ---------------------------------- */
+.tool-notes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--tool-space-5) var(--tool-space-6);
+  margin-top: var(--tool-block);
+  padding-top: var(--tool-space-6);
+  border-top: 1px solid var(--border);
+}
+
+.tool-note h2,
+.tool-note h3 {
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.005em;
+  color: var(--text);
+}
+
+.tool-note p,
+.tool-note ul {
+  margin-top: 8px;
+  font-size: 13.8px;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+.tool-note ul { padding-left: 18px; list-style: disc; }
+.tool-note li + li { margin-top: 4px; }
+
+.tool-note code {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.tool-note a { font-weight: 600; }
+
+/* ------------------------------ Date converter ----------------------------- */
+.date-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  align-items: stretch;
+}
+
+.date-form { padding: clamp(20px, 3vw, 30px); min-width: 0; }
+
+.field + .field { margin-top: 22px; }
+
+.field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.date-input {
+  width: 100%;
+  max-width: 320px;
+  padding: 12px 15px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  font-family: var(--font-body);
+  font-size: 21px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.date-input:focus { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.date-input[aria-invalid="true"] { border-color: var(--danger); }
+
+.field-hint {
+  margin-top: 9px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.field-hint code {
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1px 6px;
+}
+
+.date-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+
+.date-actions .btn { min-height: 44px; }
+
+.date-message {
+  margin-top: 16px;
+  padding: 11px 13px;
+  border-radius: 9px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.date-message[hidden] { display: none; }
+
+/* ------------------------------- The date slip ------------------------------ */
+.date-slip {
+  min-width: 0;
+  padding: clamp(20px, 3vw, 30px);
+  background: var(--background);
+  border-left: 1px solid var(--border);
+}
+
+.slip {
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+}
+
+.slip-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--background);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.slip-row {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.slip-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.slip-value-wrap { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+
+.slip-sub {
+  font-family: var(--font-np);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.slip-value--day { font-size: 17px; font-weight: 600; line-height: 1.4; }
+
+.slip-value {
+  font-family: var(--font-body);
+  font-size: clamp(21px, 2.6vw, 24px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.slip-value--np {
+  font-family: var(--font-np);
+  font-size: clamp(18px, 2.2vw, 21px);
+  line-height: 1.5;
+}
+
+.slip-legal {
+  display: flex;
+  align-items: stretch;
+  border-top: 1px solid var(--border-strong);
+}
+
+.slip-legal-body { flex: 1; min-width: 0; padding: 14px 16px; }
+
+.slip-legal-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.slip-code {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-body);
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.slip-code--none { color: var(--text-muted); font-weight: 500; }
+
+.slip-copy { margin-top: 10px; }
+
+/* The one memorable element: the day number, stamped like a court register. */
+.stamp {
+  flex: none;
+  width: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 12px 8px;
+  border-left: 1px solid var(--border-strong);
+  background: var(--primary-tint);
+  color: var(--primary-deeper);
+}
+
+.stamp-num {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 600;
+  line-height: 0.95;
+  font-variant-numeric: tabular-nums;
+}
+
+.stamp-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.stamp--none { background: var(--background); color: var(--text-muted); }
+.stamp--none .stamp-num { font-size: 22px; font-family: var(--font-body); font-weight: 600; }
+
+.slip-empty {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  min-height: 240px;
+  padding: 32px;
+  text-align: center;
+  border: 1px dashed var(--border-strong);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.slip-empty .icon { width: 26px; height: 26px; color: var(--text-muted); }
+
+.slip-extra {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+/* --------------------------------- Copy chip -------------------------------- */
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 5px 11px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: color 0.18s var(--ease), border-color 0.18s var(--ease), background-color 0.18s var(--ease);
+}
+
+.copy-btn .icon { width: 14px; height: 14px; }
+.copy-btn:hover { color: var(--primary); border-color: var(--primary-border); background: var(--primary-tint); }
+.copy-btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+.copy-btn.is-done { color: var(--success); border-color: #C6E3D3; background: var(--success-soft); }
+
+/* ------------------------------ Tools index page ---------------------------- */
+.tool-teaser-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--tool-gap);
+}
+
+.tool-teaser {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tool-space-3);
+  padding: var(--tool-card-pad);
+  border: 1px solid var(--border);
+  border-radius: var(--tool-radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-1);
+  color: var(--text);
+  transition: transform 0.2s var(--ease), border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.tool-teaser:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary-border);
+  box-shadow: var(--shadow-2);
+}
+
+.tool-teaser-icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--primary-tint);
+  color: var(--primary);
+}
+
+.tool-teaser-icon .icon { width: 20px; height: 20px; }
+
+.tool-teaser-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.tool-teaser p { font-size: 14.5px; line-height: 1.65; color: var(--text-muted); }
+
+.tool-teaser-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.tool-teaser:hover .tool-teaser-link .icon { transform: translateX(2px); }
+.tool-teaser-link .icon { transition: transform 0.2s var(--ease); }
+
+.section--tools { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+/* -------------------------------- Responsive -------------------------------- */
+@media (max-width: 960px) {
+  .tool-panes { grid-template-columns: 1fr; }
+  .tool-pane + .tool-pane { border-left: 0; border-top: 1px solid var(--border); }
+  .tool-field { min-height: 220px; }
+  .date-grid { grid-template-columns: 1fr; }
+  .date-slip { border-left: 0; border-top: 1px solid var(--border); }
+  .tool-notes { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 720px) {
+  .section--tool { --tool-gap: var(--tool-space-4); }
+  .section--tool-hero .breadcrumb ol { margin-bottom: 22px; }
+  .tool-notes { grid-template-columns: 1fr; }
+  .tool-teaser-grid { grid-template-columns: 1fr; }
+  .tool-status { margin-left: 0; text-align: left; width: 100%; }
+  .tool-actions .btn { flex: 1 1 auto; }
+  .tool-doc-mode { flex: 1 1 100%; }
+  .doc-file-actions { margin-left: 0; }
+  .date-input { max-width: none; }
+  .stamp { width: 78px; }
+  .stamp-num { font-size: 32px; }
+  .slip-row { grid-template-columns: 26px minmax(0, 1fr) auto; gap: 10px; }
+  .tool-meta li { padding-right: 12px; }
+  .tool-meta li + li { padding-left: 12px; }
+}
+
+@media (max-width: 480px) {
+  .section--tool { --tool-card-pad: 18px; }
+  .doc-pick { gap: var(--tool-space-3); padding: var(--tool-space-3); }
+  .doc-download { white-space: normal; }
 }

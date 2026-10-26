@@ -1,0 +1,9 @@
+{
+  "name": "law-erp-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tarikh marketing site and public legal tools",
+  "scripts": {
+    "test": "node --test tests/preeti.test.js tests/bs-ad.test.js tests/docx.test.js"
+  }
+}
