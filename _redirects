@@ -1,0 +1,20 @@
+# Tarikh — redirects for Netlify and Cloudflare Pages.
+#
+# http -> https and apex (tarikh.tech) -> www.tarikh.tech are NOT handled here.
+# Set them as primary-domain / "redirect apex to primary" rules in the host
+# dashboard so the hop happens at the edge instead of in the app. See
+# deploy/REDIRECTS.md.
+#
+# Old flat file paths -> clean URLs. One 301 hop each.
+
+/index.html                                 /                              301
+/features.html                              /features                      301
+/pricing.html                               /pricing                       301
+/privacy.html                               /privacy                       301
+/terms.html                                 /terms                         301
+/blog/index.html                            /blog/                         301
+/blog/blog-post-nepal-court-hierarchy.html  /blog/nepal-court-hierarchy    301
+
+# Anything else that does not exist gets the 404 page with a real 404 status.
+# Real files always win over a splat rule, so this only catches unknown paths.
+/*                                          /404.html                      404

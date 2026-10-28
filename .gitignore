@@ -11,6 +11,7 @@ Thumbs.db
 
 # Dependency and build output
 node_modules/
+.work/
 dist/
 build/
 out/

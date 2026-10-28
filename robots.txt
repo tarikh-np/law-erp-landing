@@ -1,28 +1,4 @@
-# Tarikh — Nepal Law ERP & Case Management Software
-# Hosted at: https://tarikh.complynepal.com/ | Instagram: @tarikh.np
-# Sitemap: https://tarikh.complynepal.com/sitemap.xml
-
 User-agent: *
 Allow: /
 
-# Explicitly welcome major search bots and social crawlers without crawl throttling
-User-agent: Googlebot
-Allow: /
-
-User-agent: Googlebot-Image
-Allow: /
-
-User-agent: bingbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: LinkedInBot
-Allow: /
-
-# Sitemap index
-Sitemap: https://tarikh.complynepal.com/sitemap.xml
+Sitemap: https://www.tarikh.tech/sitemap.xml
