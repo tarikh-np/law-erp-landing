@@ -53,7 +53,6 @@
 
   .comp-grid { grid-template-columns: 1fr; }
   .proof-grid { grid-template-columns: 1fr; }
-  .hero-benefits { grid-template-columns: 1fr; gap: 14px; }
 
   /* Why Tarikh: reduce gap between rows */
   .why-row { gap: 36px; }
@@ -155,7 +154,6 @@
 
 /* ---------------------------------- ≤560 ---------------------------------- */
 @media (max-width: 560px) {
-  .hero-benefit { padding: 16px 18px; gap: 14px; }
   .wf-panel { padding: 20px; }
 
   .dark-kpis { grid-template-columns: 1fr; }
@@ -196,60 +194,6 @@
   .mod-featured { padding: 26px 22px; }
 
   .faq-q { font-size: 15.5px; }
-}
-
-/* ---------------------------------- ≤480 ---------------------------------- */
-@media (max-width: 480px) {
-  .contact-grid {
-    grid-template-columns: minmax(0, 1fr);
-    min-width: 0;
-  }
-
-  .contact-card {
-    width: 100%;
-    min-width: 0;
-    padding: 22px;
-  }
-
-  .contact-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .contact-actions .btn {
-    width: 100%;
-    min-width: 0;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    text-align: center;
-  }
-
-  .contact-list li,
-  .contact-list li span {
-    min-width: 0;
-    overflow-wrap: anywhere;
-  }
-
-  .tool-bar {
-    align-items: stretch;
-  }
-
-  .seg {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    width: 100%;
-    min-width: 0;
-  }
-
-  .seg-btn {
-    justify-content: center;
-    min-width: 0;
-    padding-inline: 5px;
-    gap: 4px;
-    font-size: clamp(11px, 3vw, 13px);
-    white-space: normal;
-    text-align: center;
-  }
 }
 
 /* ---------------------------------- ≤420 ---------------------------------- */
