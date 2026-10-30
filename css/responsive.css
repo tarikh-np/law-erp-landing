@@ -108,8 +108,17 @@
 
   .benefit-grid { grid-template-columns: 1fr; }
 
-  /* Inner page hero text center on small screens */
+  .section--tools .section-head { margin-bottom: 32px; }
+  .blog-post-breadcrumb { padding-block: 8px; }
+  .tool-teaser { min-height: 270px; padding: 24px; }
+
+  /* Inner page hero text and spacing on small screens */
+  .section--page-hero { padding-top: 16px; padding-bottom: 40px; }
+  .section--legal { padding-top: 16px; padding-bottom: 40px; }
+  .section--page-hero .breadcrumb ol { margin-bottom: 16px; }
+  .legal-head .breadcrumb ol { margin-bottom: 16px; }
   .section--page-hero .section-head { text-align: center; }
+  .breadcrumb [aria-current="page"] { max-width: 180px; }
   .pricing-cta-buttons, .blog-empty-cta, .pricing-faq-links { justify-content: center; }
 
   /* Hero: reduce decorative shapes, benefits stack, logos wrap */
