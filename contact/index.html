@@ -218,14 +218,89 @@
         <div class="contact-grid" data-reveal>
           <div class="contact-card">
             <h2>Book a demo for your firm</h2>
-            <p>Send us an email with your firm name and the areas you want to see — typically matters, court hearings and Peshi dates, documents or NPR billing. We will reply with a time for a walkthrough.</p>
-            <!-- TODO(owner): a contact form posting to Formspree / Netlify Forms / a Google Form would
-                 replace this mailto: link once the backend is chosen. -->
-            <div class="contact-actions">
-              <a class="btn btn--primary btn--lg" href="mailto:support@complynepal.com?subject=Tarikh%20demo%20request&amp;body=Hello%20Tarikh%20team%2C%0D%0A%0D%0AFirm%20name%3A%20%0D%0ANumber%20of%20advocates%3A%20%0D%0APractice%20areas%3A%20%0D%0AWhat%20I%20would%20like%20to%20see%3A%20%0D%0A%0D%0AThanks%2C">Email us to book a demo</a>
-              <a class="btn btn--ghost btn--lg" href="https://www.instagram.com/tarikh.np/" target="_blank" rel="noopener noreferrer">Message us on Instagram</a>
-            </div>
-            <p class="contact-note">The email above opens your mail app with the details already filled in.</p>
+            <p>Tell us about your law firm and what you would like to explore. We will prepare a personalized walkthrough of Tarikh tailored to your practice workflow.</p>
+
+            <form class="lead-form" id="contactLeadForm" data-lead-form novalidate>
+              <div class="lead-form__alert lead-form__alert--error" id="contactFormError" role="alert" hidden></div>
+              <div class="lead-form__alert lead-form__alert--success" id="contactFormSuccess" role="status" hidden>
+                <div class="lead-form__success-icon" aria-hidden="true">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+                </div>
+                <div class="lead-form__success-text">
+                  <strong>Thank you for reaching out!</strong>
+                  <p>We have received your demo request. Our team will contact you shortly to schedule your personalized walkthrough of Tarikh.</p>
+                </div>
+              </div>
+
+              <div class="lead-form__body" id="contactFormFields">
+                <div class="lead-form__grid">
+                  <!-- Law Firm Name -->
+                  <div class="lead-form__group">
+                    <label class="lead-form__label" for="contactFirmName">Law Firm Name</label>
+                    <input class="lead-form__input" type="text" id="contactFirmName" name="firmName" placeholder="e.g. Apex Legal Associates" autocomplete="organization">
+                  </div>
+
+                  <!-- User Name (Required) -->
+                  <div class="lead-form__group">
+                    <label class="lead-form__label" for="contactUserName">Your Name <span class="lead-form__req" aria-hidden="true">*</span></label>
+                    <input class="lead-form__input" type="text" id="contactUserName" name="userName" required placeholder="e.g. Adv. Saurav Sharma" autocomplete="name" aria-required="true">
+                    <span class="lead-form__error" id="contactUserNameError" aria-live="polite"></span>
+                  </div>
+
+                  <!-- Email (Required) -->
+                  <div class="lead-form__group">
+                    <label class="lead-form__label" for="contactUserEmail">Email Address <span class="lead-form__req" aria-hidden="true">*</span></label>
+                    <input class="lead-form__input" type="email" id="contactUserEmail" name="email" required placeholder="advocate@firm.com" autocomplete="email" aria-required="true">
+                    <span class="lead-form__error" id="contactUserEmailError" aria-live="polite"></span>
+                  </div>
+
+                  <!-- Phone Number (Required) -->
+                  <div class="lead-form__group">
+                    <label class="lead-form__label" for="contactUserPhone">Phone Number <span class="lead-form__req" aria-hidden="true">*</span></label>
+                    <input class="lead-form__input" type="tel" id="contactUserPhone" name="phone" required placeholder="e.g. 98XXXXXXXX" autocomplete="tel" aria-required="true">
+                    <span class="lead-form__error" id="contactUserPhoneError" aria-live="polite"></span>
+                  </div>
+
+                  <!-- Total Number of Staffs -->
+                  <div class="lead-form__group lead-form__group--full">
+                    <label class="lead-form__label" for="contactStaffCount">Total Number of Staff</label>
+                    <div class="lead-form__select-wrap">
+                      <select class="lead-form__select" id="contactStaffCount" name="staffCount">
+                        <option value="">Select team size...</option>
+                        <option value="1">Solo practitioner (1)</option>
+                        <option value="2-5">2 &ndash; 5 staff members</option>
+                        <option value="6-15">6 &ndash; 15 staff members</option>
+                        <option value="16-30">16 &ndash; 30 staff members</option>
+                        <option value="30+">30+ staff members</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Description -->
+                  <div class="lead-form__group lead-form__group--full">
+                    <label class="lead-form__label" for="contactDescription">Practice Details / Requirements</label>
+                    <textarea class="lead-form__textarea" id="contactDescription" name="description" rows="3" placeholder="Tell us about your law firm, typical case volume, or what specific features you would like to explore..."></textarea>
+                  </div>
+                </div>
+
+                <!-- Anti-spam Honeypot -->
+                <div style="position: absolute; left: -9999px;" aria-hidden="true">
+                  <input type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+                </div>
+
+                <div class="lead-form__footer">
+                  <button class="btn btn--primary btn--lg lead-form__submit-btn" type="submit" id="contactSubmitBtn">
+                    <span>Book a Demo Walkthrough</span>
+                    <svg class="icon icon--arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    <span class="lead-form__spinner" aria-hidden="true"></span>
+                  </button>
+                  <p class="lead-form__privacy-note">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    Your information is strictly confidential. See our <a href="/privacy">Privacy Policy</a>.
+                  </p>
+                </div>
+              </div>
+            </form>
           </div>
 
           <div class="contact-card">
@@ -330,5 +405,6 @@
   </footer>
 
   <script src="/js/main.js" defer></script>
+  <script src="/js/lead-form.js" defer></script>
 </body>
 </html>

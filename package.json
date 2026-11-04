@@ -4,6 +4,7 @@
   "private": true,
   "description": "Tarikh marketing site and public legal tools",
   "scripts": {
-    "test": "node --test tests/preeti.test.js tests/bs-ad.test.js tests/docx.test.js"
+    "test": "node --test tests/preeti.test.js tests/bs-ad.test.js tests/docx.test.js tests/lead-form.test.js",
+    "start": "node serve.js"
   }
 }
