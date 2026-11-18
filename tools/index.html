@@ -224,36 +224,75 @@
       </div>
     </section>
 
-    <section class="section section--tool" aria-label="Available tools">
+    <section class="section section--tool tools-directory" aria-label="Available tools">
       <div class="container">
         <div class="tool-teaser-grid">
-          <a class="tool-teaser" href="/tools/preeti-unicode">
-            <span class="tool-teaser-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M9 6v13M15 6v13"/></svg></span>
+          <a class="tool-teaser tools-page-card" href="/tools/preeti-unicode">
+            <span class="tools-card-head">
+              <span class="tool-teaser-icon tools-card-icon" aria-hidden="true">
+                <svg class="icon" viewBox="0 0 24 24" focusable="false"><text x="3.5" y="16.5" class="tools-icon-letter">अ</text><path d="M14 8h6m-3-3 3 3-3 3"/></svg>
+              </span>
+              <span class="tools-card-category">Text &amp; Word</span>
+            </span>
             <span class="tool-teaser-title">Preeti ↔ Unicode Converter</span>
-            <p>Turn a Preeti-encoded pleading into Nepali Unicode, or go the other way. Paste the text or upload the .docx, and keep paragraphs, clause numbers and English text.</p>
-            <span class="tool-teaser-link">Open converter <svg class="icon icon--arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            <span class="tools-card-description">Convert Nepali text between the Preeti typewriter layout and Unicode. Paste text, or choose the Word converter for a .docx.</span>
+            <span class="tools-card-preview" aria-hidden="true">
+              <span class="tools-preview-head"><span>Text preview</span><span class="tools-preview-state"><span></span>Ready in your browser</span></span>
+              <span class="tools-text-preview">
+                <span class="tools-preview-field"><span>Preeti input</span><code>g]kfnL cbfnt</code></span>
+                <svg class="icon tools-preview-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+                <span class="tools-preview-field tools-preview-field--result"><span>Unicode result</span><strong>नेपाली अदालत</strong></span>
+              </span>
+              <span class="tools-card-points">
+                <span><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/></svg>Both directions</span>
+                <span><svg class="icon" viewBox="0 0 24 24"><path d="M4 6h16M9 6v13M15 6v13"/></svg>Paragraphs &amp; line breaks</span>
+                <span><svg class="icon" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>Word documents</span>
+              </span>
+            </span>
+            <span class="tools-card-footer"><span class="tool-teaser-link">Explore converter <svg class="icon icon--arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="tools-card-footnote">Instant text conversion</span></span>
           </a>
 
-          <a class="tool-teaser" href="/tools/bs-ad-converter">
-            <span class="tool-teaser-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18"/></svg></span>
+          <a class="tool-teaser tools-page-card" href="/tools/bs-ad-converter">
+            <span class="tools-card-head">
+              <span class="tool-teaser-icon tools-card-icon" aria-hidden="true">
+                <svg class="icon" viewBox="0 0 24 24" focusable="false"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4m8-4v4M4 10h16M8 14h2m4 0h2m-8 3h2"/></svg>
+              </span>
+              <span class="tools-card-category">Court calendar</span>
+            </span>
             <span class="tool-teaser-title">BS ↔ AD Date Converter</span>
-            <p>Type a Bikram Sambat date and read the Gregorian date, or the reverse. Shows the weekday and the day number legal documents use, ready to copy.</p>
-            <span class="tool-teaser-link">Open converter <svg class="icon icon--arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            <span class="tools-card-description">Convert Bikram Sambat dates to Gregorian and back. See the Nepali month, weekday and legal day number in one place.</span>
+            <span class="tools-card-preview" aria-hidden="true">
+              <span class="tools-preview-head"><span>Date preview</span><span class="tools-preview-range">BS 2000–2090</span></span>
+              <span class="tools-date-preview">
+                <span><span>Bikram Sambat (BS)</span><strong>२०८१.०१.१५</strong><small>बैशाख १५ · शनिबार</small></span>
+                <svg class="icon tools-date-swap" viewBox="0 0 24 24"><path d="M7 7h13m0 0-3-3m3 3-3 3M17 17H4m0 0 3 3m-3-3 3-3"/></svg>
+                <span><span>Gregorian (AD)</span><strong>April 27, 2024</strong><small>Saturday</small></span>
+              </span>
+              <span class="tools-card-points">
+                <span><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/></svg>Published month lengths</span>
+                <span><svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>Legal weekday convention</span>
+                <span><svg class="icon" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg>Copy-ready dates</span>
+              </span>
+            </span>
+            <span class="tools-card-footer"><span class="tool-teaser-link">Open date converter <svg class="icon icon--arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="tools-card-footnote">BS 2000–2090</span></span>
           </a>
         </div>
 
-        <div class="tool-notes">
+        <div class="tool-notes tools-page-notes">
           <div class="tool-note">
+            <span class="tools-note-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 9h.01M15 9h.01"/></svg></span>
             <h2>Built for Nepali practice</h2>
-            <p>Both tools follow the conventions Nepali courts and offices actually use, including the numbered weekday in the legal date line.</p>
+            <p>From Preeti pleadings to Bikram Sambat dates, the details follow the formats used in Nepali courts and offices.</p>
           </div>
           <div class="tool-note">
+            <span class="tools-note-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
             <h2>Free, and no account</h2>
-            <p>These are public tools. You do not need a Tarikh login, and no part of your text or date is kept after you close the tab.</p>
+            <p>Use either tool without signing in. Your text and dates are processed in this tab, not uploaded or saved.</p>
           </div>
           <div class="tool-note">
+            <span class="tools-note-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M4 8h16v12H4zM8 8V5h8v3M4 13h16M10 13v2h4v-2"/></svg></span>
             <h2>From the team behind Tarikh</h2>
-            <p>Tarikh is legal practice management software for Nepal's law firms. <a href="/features">See how matters, hearings and billing connect</a>.</p>
+            <p>Tarikh brings matters, hearings, documents and billing together for law firms in Nepal. <a href="/features">See how it works</a>.</p>
           </div>
         </div>
       </div>
@@ -314,7 +353,7 @@
         </div>
         <div class="footer-social">
           <a href="https://www.instagram.com/tarikh.np/" target="_blank" rel="noopener noreferrer" aria-label="Tarikh on Instagram @tarikh.np">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.16c-5.77 0-10.48 4.72-10.48 10.5 0 5.75 4.75 10.48 10.5 10.48 5.72 0 10.47-4.73 10.47-10.5 0-5.78-4.75-10.48-10.5-10.48zM12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0z"/><path d="M10.81 12.18c-.03.16-.11.31-.24.4-.62.47-1.43.62-2.32.44-.87-.18-1.58-.83-1.76-1.68-.18-.87.03-1.74.59-2.28.56-.56 1.32-.78 2.1-.68.29.01.58.08.86.2v.36c-.27-.04-.55-.06-.84-.06-1.06 0-1.96.74-2.2 1.76-.18.74.04 1.54.65 1.96.67.45 1.58.52 2.42.32.72-.17 1.3-.64 1.66-1.27.32-.57.37-1.2.21-1.82-.15-.6-.49-1.15-.95-1.56-.48-.43-1.07-.69-1.74-.69z"/></svg>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
             <span class="footer-social-label">Instagram: @tarikh.np</span>
           </a>
         </div>

@@ -74,7 +74,9 @@
   /* Inner page feature detail stacks */
   .feature-detail-row { grid-template-columns: 1fr; gap: 32px; }
   .feature-detail-row--reverse { direction: ltr; }
-  .pricing-contact-card { grid-template-columns: 1fr; gap: 32px; }
+  .pricing-grid { grid-template-columns: repeat(2, 1fr); max-width: 780px; margin-inline: auto; }
+  .pricing-card:nth-child(3) { grid-column: span 2; max-width: 460px; width: 100%; margin-inline: auto; }
+  .pricing-included-grid { grid-template-columns: repeat(2, 1fr); gap: 28px 24px; }
 }
 
 /* ---------------------------------- ≤768 ---------------------------------- */
@@ -119,7 +121,13 @@
   .legal-head .breadcrumb ol { margin-bottom: 16px; }
   .section--page-hero .section-head { text-align: center; }
   .breadcrumb [aria-current="page"] { max-width: 180px; }
-  .pricing-cta-buttons, .blog-empty-cta, .pricing-faq-links { justify-content: center; }
+  .blog-empty-cta, .pricing-faq-links { justify-content: center; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin-inline: auto; gap: 20px; }
+  .pricing-card:nth-child(3) { grid-column: auto; max-width: none; }
+  .pricing-plan-desc { min-height: auto; }
+  .pricing-pitch-content { display: flex; flex-direction: column; gap: 8px; }
+  .pitch-dot { display: none; }
+  .pricing-included-grid { grid-template-columns: 1fr; gap: 24px; }
 
   /* Hero: reduce decorative shapes, benefits stack, logos wrap */
   .hero-visual::after { display: none; }
@@ -203,6 +211,8 @@
   .mod-featured { padding: 26px 22px; }
 
   .faq-q { font-size: 15.5px; }
+  .pricing-card { padding: 22px 18px; }
+  .pricing-pitch-box { padding: 14px 16px; }
 }
 
 /* ---------------------------------- ≤420 ---------------------------------- */

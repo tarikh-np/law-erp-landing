@@ -13,8 +13,14 @@
   var clipboard = window.TarikhClipboard;
   if (!engine) return;
 
+  function describeChars(list) {
+    return list.slice(0, 8).map(function (item) {
+      return item.char;
+    }).join(' ');
+  }
+
   var shell = document.querySelector('.tool-shell');
-  if (!shell) return;
+  if (shell) {
 
   var source = document.getElementById('sourceText');
   var output = document.getElementById('outputText');
@@ -85,12 +91,6 @@
     alertBox.hidden = false;
     alertBox.className = 'tool-alert' + (kind ? ' tool-alert--' + kind : '');
     alertBox.textContent = message;
-  }
-
-  function describeChars(list) {
-    return list.slice(0, 8).map(function (item) {
-      return item.char;
-    }).join(' ');
   }
 
   /* The engine counts the keys its rules consume (reph "{" and the m suffix) as
@@ -313,6 +313,7 @@
   applyMode();
   updateCounts();
   setStatus('Ready. Type or paste text to convert.');
+  }
 
   /* --------------------------------------------------------------------------
      Document upload: Preeti .docx in, Unicode .docx out, in this tab.
